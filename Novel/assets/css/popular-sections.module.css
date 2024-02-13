@@ -1,0 +1,174 @@
+@import url("includes/global.css");
+.content-right {
+  margin-top: 40px;
+  gap: 40px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+ 
+.novels-right .novel-card:not(:first-child) {
+    padding-top:15px;
+}
+.left-side-header-right{
+  display: flex;
+  margin-top:-30px;
+  margin-bottom:-60px;
+
+}
+.content-header-right{
+    padding-bottom: 5px;
+     display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+.content-header-right p{
+    font-weight: 600;
+    line-height: 1.5;
+    color: #333;
+    font-size: 19px;
+}
+.sqr-right{
+    display: inline-block;
+    background: #52aa6d;
+ 
+    background: linear-gradient(left, #52aa6d  40%, #67A97B);
+    color: #fff;
+     position: relative;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 15px;
+    color: #fff;
+      padding-left:25px;
+     padding-right:25px;
+     padding-top:5px;
+     padding-bottom: 5px;
+  }
+ 
+.novel-card-right{
+    display: flex;
+    padding: 25px 20px 25px 0px; 
+    border-bottom: 1px solid #ebebeb;
+    cursor: pointer;
+ }
+.novel-img-right{
+    margin-right:10px;
+}
+.title-right{
+    font-weight: 600;
+    color: #333;
+    font-size: 12px;
+}
+.title-right-link{
+    color: #333;
+    transition: 0.3s;
+}
+.title-right-link:hover{
+    color:#52aa6d;
+ }
+
+.fa-star-right{
+    margin: 0 1px;
+    font-size: 12px;
+    color: #ffd900;
+}
+
+.chapter-right{
+    background-color: #ebebeb;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 11px;
+    transition: all .3s;
+    color: #333;
+
+}
+.chapter-right:hover{
+ 
+        background-color: #52aa6d;
+        color: white;
+ 
+}
+.chapter-container-right{
+    display: flex;
+    align-items: center;
+    margin-top:20px;
+}
+.time-right{
+    font-size: 11px;
+    line-height: 1.5;    color: #888;
+
+    margin-left:20px;
+}
+
+.novel-card-right img {
+      width: 70px;
+    aspect-ratio: auto 193 / 278;
+    height: 98px;
+ 
+ }
+ .more-novels-btn{
+    background-color: #52aa6d;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    padding: 6px 0;
+    -webkit-transition: background-color 200ms ease;
+    -moz-transition: background-color 200ms ease;
+    -o-transition: background-color 200ms ease;
+    transition: background-color 200ms ease;
+     padding-top:9px;
+    padding-bottom: 9px;
+}
+.more-novels-btn:hover{
+    background-color: black;
+}
+
+@media (min-width: 588px) and (max-width: 1100px) {
+/* 
+    .novel-img-right{
+        margin-right: 0px;
+    } */
+    .novel-card-right img {
+        width: 60px;
+      aspect-ratio: auto 193 / 278;
+      height: 78px;
+   }
+   /* .time-right{
+    font-size: 11px;
+    line-height: 1.5;    
+    color: #888;
+    margin-left: 0px;
+}
+  */
+  .chapter-container-right{
+    display: block;
+
+}
+}
+
+@media (max-width: 1100px) {
+    .chapter-container-right{
+        flex-direction: column;
+     }
+    .time-right{
+    margin-left: 0px;
+    margin-top:5px;
+    }
+
+}
+ 
+@media (max-width: 588px) {
+    .chapter-container-right{
+        flex-direction: row;
+         }
+         .time-right{
+            margin-left: 20px;
+            margin-top:0px;
+            }
+}
+ 

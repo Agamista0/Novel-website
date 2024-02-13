@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Search Results</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        main {
+            margin: 20px;
+        }
+
+        .result-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .book-card {
+            width: 700px;
+            background-color: #fff;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .book-card:hover {
+            transform: scale(1.05);
+        }
+
+        .book-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .book-card-header{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .fa-ellipsis{
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .book-author {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .book-description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+ .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: transparent;
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.show {
+  display: block;
+}
+ 
+    body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.search-container {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+}
+
+button {
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #475348;
+}
+
+.create-novel-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:40px;
+}
+.create-novel{
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+.create-novel:hover{
+    background-color: #475348;
+}
+
+
+    </style>
+</head>
+<body>
+    
+    <header>
+        <h1>Search Results</h1>
+    </header>
+    <main>
+ 
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search for novels...">
+                <button >Search</button>
+            </div>
+                 
+            <div class="create-novel-div">
+                <a href="" class="create-novel">Create Novel</a>
+            </div>
+ 
+        <div class="result-container">
+            <div class="book-card">
+                <div class="book-card-header">
+                    <div class="book-title">Book 1</div>
+                    <div class="dropdown">
+                        <i class="fas fa-ellipsis dropbtn"onclick="toggleDropdown()"></i> 
+                        <div id="myDropdown" class="dropdown-content">
+                            <a href="#">Edit Novel</a>
+                            <a href="#">Add Chapters</a>
+                            <a href="#">Delete</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-author">Author 1</div>
+                <p class="book-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dapibus augue at posuere elementum.</p>
+            </div>
+        </div>
+    </main>
+</body>
+<script>
+     function toggleDropdown() {
+            var dropdown = document.getElementById("myDropdown");
+            dropdown.classList.toggle("show");
+        }
+
+         window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+</script>
+</html>

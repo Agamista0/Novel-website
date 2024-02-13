@@ -1,0 +1,284 @@
+body{
+
+  background-color: #262626;
+
+ }
+ a{
+  transition: 0.3s !important;
+ }
+  .rating-number{
+  color: rgb(200, 200, 200)  !important;
+
+ }
+ .chapter{
+  border: 1px solid      #666 
+  !important;
+  color: rgb(200, 200, 200);
+  background-color: transparent !important;
+
+ }
+ .chapter:hover{
+   color:#52aa6d;
+ 
+ }
+ .desc-div h3 {
+  color: rgb(200, 200, 200) !important;
+
+}
+ .chapter-row a  {
+  color: rgb(200, 200, 200) !important;
+
+ }
+ .chapter-row a:hover  {
+  color:#52aa6d !important;
+
+ }
+ .title-for-phone{
+  color: rgb(200, 200, 200) !important;
+ }
+  .content-header p  {
+    color: rgb(200, 200, 200) !important;
+
+ }
+ .title{
+  color: rgb(200, 200, 200);
+ }
+ 
+ .Show-More-Btn {  color: rgb(200, 200, 200) !important;
+
+ }
+ .left-side-header .fa-arrow-up-wide-short {
+  color: rgb(200, 200, 200) !important;
+ }
+ .novel-container-books{
+  background-color: #363636 !important;
+
+ }
+ .tag-link{
+  color: rgb(200, 200, 200) !important;
+
+ }
+  .novel-info-p{
+    color: rgb(200, 200, 200) !important;
+
+ }
+ .info-links{
+  color: rgb(200, 200, 200) !important;
+
+ }
+  .footer{ 
+    background-color: #363636 !important;
+
+ }
+  .footer a{ 
+  color: rgb(200, 200, 200) !important;
+
+ }
+ .title-right-link
+{
+  color: rgb(200, 200, 200) !important;
+
+}
+.title-right-link:hover
+{
+  color:#52aa6d !important;
+
+}
+.chapter-right
+{
+  background-color: transparent !important;
+  border: 1px solid rgb(200, 200, 200)  !important;
+  color: rgb(200, 200, 200) !important;
+
+}
+.chapter-right:hover
+{
+  color:#52aa6d !important;
+
+
+}
+.star {
+  color: rgb(200, 200, 200)  ;
+
+
+}
+.dropdown {
+  background-color: #262626 !important;}
+  
+  .btns-chatper-page a{
+    background-color: transparent !important;
+    border: 1px solid rgb(200, 200, 200)  !important;
+    color: rgb(200, 200, 200) !important;
+    padding:10px;
+  
+  }
+  .btns-chatper-page a:hover{
+     border: 1px solid #52aa6d  !important;
+    color:#52aa6d !important;
+   
+  }
+  .chapter-body p {
+    color: rgb(200, 200, 200) !important;
+
+  }
+  .tags{
+    color: rgb(200, 200, 200) !important;
+
+  }
+  .user-settings-left-side{
+    background-color:#363636 !important;
+
+  }
+  .user-settings-left-side a 
+{
+  color:rgb(200, 200, 200) !important;
+}
+.user-settings-left-side a:hover
+{
+  color: #52aa6d !important;
+}
+.delete-container label{
+  color:rgb(200, 200, 200) !important;
+
+}
+ .user-settings-right-side-header  
+{
+  background-color:#363636 !important;
+  color:rgb(200, 200, 200) !important;
+  border-bottom: 2px solid #4f4f4f !important;
+
+}
+ .user-settings-header  
+{
+  color:rgb(200, 200, 200) !important;
+  border-bottom: 2px solid #4f4f4f !important;
+
+}
+.title-history {
+  color:rgb(200, 200, 200) !important;
+
+}
+.novel-card:hover{
+  background-color: #4f4f4f !important;
+      
+  }
+  .header-reader{
+    color:rgb(200, 200, 200) !important;
+
+   
+}
+ .update-info-container-p  
+{
+  color:rgb(200, 200, 200) !important;
+
+}
+.account-label{
+  color:rgb(200, 200, 200) !important;
+
+}
+ .old-info {
+  color:rgb(200, 200, 200) !important;
+
+}
+ .img-info-header  
+{
+  color:rgb(200, 200, 200) !important;
+ 
+}
+.pfpinp 
+{
+  color:rgb(200, 200, 200) !important;
+
+}
+.more-info{
+  background-color: #6c6c6c !important;
+
+}
+.ttt {
+  color:rgb(200, 200, 200) !important;
+
+  
+}
+.hhh a {
+  color:rgb(200, 200, 200) !important;
+
+}
+.hhh   {
+  color:rgb(200, 200, 200) !important;
+
+}
+.hhh a:hover {
+  color:#52aa6d !important;
+
+}
+
+.title-advanced{
+  color:rgb(200, 200, 200) !important;
+}
+.title-advanced:hover{
+  color:#52aa6d !important;
+  transition-duration:0.3s ;
+}
+.search-bar-container {
+background-color: #363636 !important;
+
+
+}
+.checkbox-column label {
+color:rgb(200, 200, 200) !important;
+}
+.more-search-options div label {
+color:rgb(200, 200, 200) !important;
+
+}
+.book-title{
+color:rgb(200, 200, 200) !important;
+
+}
+#hover-list  {
+background-color: #363636 !important;
+
+}
+#hover-list a{
+ color:rgb(200, 200, 200) !important;
+
+}
+#hover-list a:hover{
+color:#52aa6d !important;
+
+}
+.custom-secondary-navbar-ul a{
+color:rgb(200, 200, 200) !important;
+
+}
+.custom-secondary-navbar-ul a:hover{
+color:#52aa6d !important;
+
+}
+.dropdown ul li a{
+color:rgb(200, 200, 200) !important;
+}
+.dropdown ul li a:hover{
+color:#52aa6d !important;
+}
+.nav-list-dropdown{
+background-color: #363636 !important;
+
+}
+.nav-list-dropdown ul li a{
+color:rgb(200, 200, 200) !important;
+}
+.nav-list-dropdown ul li a:hover{
+color:#52aa6d !important;
+}
+ .history-title 
+  {
+    color:rgb(200, 200, 200) !important;
+
+}
+.older-posts{
+  color:rgb(200, 200, 200) !important;
+}
+.older-posts:hover{
+  color:#52aa6d !important;
+}

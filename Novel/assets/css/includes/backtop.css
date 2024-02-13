@@ -1,0 +1,24 @@
+.backtotop{
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    background-color: rgba(0,0,0,.7);
+    color: #999;
+    font-size: 15px;
+    text-align: center;
+    position: fixed;
+    bottom: 10px;
+    z-index: 111111110;
+    line-height: 1.4;
+    -moz-transition: all .2s;
+    -o-transition: all .2s;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+    right: 10px;
+    align-items: center;
+    justify-content: center;
+}
+.backtotop:hover{
+    background-color: #52aa6d;
+    color:white;
+}

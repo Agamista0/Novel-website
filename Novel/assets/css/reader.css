@@ -1,0 +1,206 @@
+@import url("includes/global.css");
+.container{
+    padding-left: 11%;
+    padding-right: 13%;
+    display: flex;
+    flex-direction: column;
+}
+.user-settings-header{
+    font-weight: 600;
+    line-height: 1.2;
+    color: #333;
+    font-size: 30px;
+    border-bottom: 1px solid #ebebeb;
+    padding-bottom:10px;
+}
+.user-content-container {
+    margin-top:50px;
+    display: grid;
+    grid-template-columns: 24% 76%;
+    grid-gap: 30px; 
+}
+.user-settings-left-side{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #f3f3f3;
+    color: #333;
+    font-weight: 600;
+    border: none;
+    border-radius: 0;
+    margin-right: 0;
+    height:205px;
+    padding:0px;
+}
+.user-settings-left-side a{
+     color: #333;
+    font-weight: 600;
+    border: none;
+    border-radius: 0;
+    margin-right: 0;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+    font-size:18px;
+    padding:15px;
+
+}
+.user-settings-left-side a:hover{
+     color:  #52aa6d; 
+}
+.highlight{
+    background-color:  #52aa6d; 
+    color: white !important; 
+}
+.highlight:hover{
+    color: #333 !important; ;
+}
+.user-settings-right-side-content{
+    display: flex;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px solid #ddd;
+transition: 0.3s;
+padding:20px;
+}
+.user-settings-right-side-content:hover{
+    background-color: #e2e2e2;
+
+}
+.novels{
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    gap:20px;
+}
+.novel-card{
+    display: flex;
+    transition: 0.3s;
+    cursor: pointer;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    padding:11px;
+}
+.title{
+    font-weight: 600;
+     color: #333;
+    font-size: 14px;
+     padding-bottom:10px;
+}
+.novel-card:hover{
+background-color: #efefef;
+    
+}
+.novel-card img{
+    margin-right:15px;
+         width: 60px;
+      aspect-ratio: auto 193 / 278;
+      height: 80px; 
+}
+.info a:first-of-type{
+     border-right:1px solid black;
+     padding-right: 11px;
+
+}
+.info a {
+    font-size: 18px;
+    color:  #52aa6d; 
+    transition-duration: 0.3s;
+}
+.info a:hover {
+    color: #666;
+}
+.page-number{
+    padding-left: 11px;
+}
+.time{
+    font-size: 11px;
+    line-height: 1.5;   
+    color: #888;
+    margin-top:10px;
+}
+.user-settings-right-side-header{
+    background-color: #ebebeb;
+     font-weight: 600;
+    color: #333;
+    font-size:14px;
+    display: flex;
+    justify-content: space-between;
+    padding:12px;
+    border-bottom: 2px solid #ebebeb;
+    padding-right:40px;
+}
+
+.options-container{
+        padding:20px;
+        border-bottom: 1px solid #ddd;
+        padding-top: 0px;
+
+}
+.options-container *{
+     margin-top: 1.5rem;
+
+}
+ .header-reader{
+    font-weight: 600;
+    font-size: 14px;
+}
+.containerr label{
+    font-size: larger;
+    color: #888;
+}
+.btn-submit button{
+    margin-top:30px; 
+    font-size: 13px;
+    font-weight: 600;
+    background-color: #52aa6d;
+    border: none;
+    border-radius: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top:6px;
+    padding-bottom:6px;
+    color: #fff;
+    -webkit-transition: all .2s;
+    -moz-transition: all .2s;
+    -o-transition: all .2s;
+    transition: all .2s;
+}
+@media (max-width: 950px) {
+    .novels{
+        grid-template-columns: repeat(1, 100%);
+    }
+    .novel-card{
+        display: flex;
+        transition: 0.3s;
+        cursor: pointer;
+        height: auto;
+        justify-content:unset;
+        align-items: unset;
+    }
+}
+
+@media (max-width: 800px) {
+    .user-settings-right-side-content{
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+    
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .user-content-container {
+        margin-top:50px;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-gap: 30px; 
+    }
+    .container{
+        padding-left: 4%;
+        padding-right: 5%;
+        display: flex;
+        flex-direction: column;
+    }
+}
+ 

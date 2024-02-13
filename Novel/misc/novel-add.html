@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Document</title>
+</head>
+<body>
+ 
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
+
+    header {
+      background-color: #343a40;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    form {
+      display: grid;
+      grid-gap: 10px;
+      margin-top: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 400px;
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+
+    button {
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+    #selectedGenres {
+      margin-top: 10px;
+    }
+
+    .selectedGenre {
+      display: inline-block;
+      padding: 5px;
+      margin: 5px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #imagePreview {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #imagePreview img {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+        }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1 style="margin: 0;">Novel Dashboard</h1>
+  </header>
+
+  <div class="container">
+     <form id="novelForm">
+      
+      <label for="image">Cover Image:</label>
+      <input type="file" id="image" name="image" accept="image/*">
+      <div id="imagePreview"></div>
+
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required>
+
+      <label for="author">Author:</label>
+      <input type="text" id="author" name="author" required>
+
+      <label for="genre">Genre:</label>
+      <select id="genre" name="genre" required multiple>
+  <option value="ACTION">ACTION</option>
+  <option value="ADVENTURE">ADVENTURE</option>
+  <option value="FANTASY">FANTASY</option>
+  <option value="ROMANCE">ROMANCE</option>
+  <option value="HAREM">HAREM</option>
+  <option value="MARTIAL ARTS">MARTIAL ARTS</option>
+  <option value="ECCHI">ECCHI</option>
+  <option value="SHOUNEN">SHOUNEN</option>
+  <option value="COMEDY">COMEDY</option>
+  <option value="SCHOOL LIFE">SCHOOL LIFE</option>
+  <option value="DRAMA">DRAMA</option>
+  <option value="HORROR">HORROR</option>
+  <option value="SHOUJO">SHOUJO</option>
+  <option value="JOSEI">JOSEI</option>
+  <option value="MATURE">MATURE</option>
+  <option value="MYSTERY">MYSTERY</option>
+  <option value="PSYCHOLOGICAL">PSYCHOLOGICAL</option>
+  <option value="SCI-FI">SCI-FI</option>
+  <option value="SEINEN">SEINEN</option>
+  <option value="SLICE OF LIFE">SLICE OF LIFE</option>
+  <option value="TRAGEDY">TRAGEDY</option>
+  <option value="SUPERNATURAL">SUPERNATURAL</option>
+</select>
+<button type="button" onclick="addGenre()">Add Genre</button>
+<div id="selectedGenres"></div>
+
+      <label for="status">Status:</label>
+      <select id="status" name="status" required>
+        <option value="Ongoing">Ongoing</option>
+        <option value="Ended">Ended</option>
+      </select>
+
+      <button type="button">Add Novel</button>
+    </form>
+  </div>
+
+  <script>
+      const selectedGenres = [];
+
+function addGenre() {
+  const genreSelect = document.getElementById("genre");
+  const selectedGenre = genreSelect.value;
+
+   if (selectedGenre && !selectedGenres.includes(selectedGenre)) {
+    selectedGenres.push(selectedGenre);
+    updateSelectedGenres();
+  }
+
+   genreSelect.value = "";
+}
+
+function removeGenre(index) {
+  selectedGenres.splice(index, 1);
+  updateSelectedGenres();
+}
+
+function updateSelectedGenres() {
+  const selectedGenresContainer = document.getElementById("selectedGenres");
+  selectedGenresContainer.innerHTML = "";
+
+  selectedGenres.forEach((genre, index) => {
+    const genreElement = document.createElement("div");
+    genreElement.className = "selectedGenre";
+    genreElement.textContent = genre + "  ";
+    
+    const removeButton = document.createElement("span");
+    removeButton.innerHTML = "&times;";
+    removeButton.onclick = () => removeGenre(index);
+
+    genreElement.appendChild(removeButton);
+    selectedGenresContainer.appendChild(genreElement);
+  });
+}
+  </script>
+
+</body>
+</html>
+ 
