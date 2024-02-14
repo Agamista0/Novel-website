@@ -1,0 +1,24 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+# Rewrite rule for /index.php
+RewriteRule ^index\.php$ / [L]
+
+# Rewrite rule for /advanced.php
+RewriteRule ^advanced\.php$ /advanced [L]
+
+# Rewrite rule for /advanced.php with query parameters
+RewriteCond %{QUERY_STRING} ^search_keywords=([^&]+)&genres%5B%5D=([^&]+)&author=([^&]+)&year_of_release=([^&]+)&status=([^&]+)$
+RewriteRule ^advanced\.php$ /advanced/%1/%2/%3/%4/%5? [L]
+
+# Rewrite rule for /advanced.php with sort and order parameters
+RewriteCond %{QUERY_STRING} ^sort=([^&]+)&order=([^&]+)$
+RewriteRule ^advanced\.php$ /advanced/%1/%2? [L]
+
+# Rewrite rule for /book.php
+RewriteCond %{QUERY_STRING} ^book_id=([^&]+)$
+RewriteRule ^book\.php$ /book/%1? [L]
+
+# Rewrite rule for /chapter-page.php
+RewriteCond %{QUERY_STRING} ^title=(.*)$
+RewriteRule ^chapter-page\.php$ /chapter/%1? [L]

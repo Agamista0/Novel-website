@@ -36,16 +36,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmtUserSettings->closeCursor(); // Close the statement
 
             
+            // Redirect the user back to the stored URL or a default page if no URL is stored
+            $redirect_url = isset($_SESSION['redirect_url']) ? $_SESSION['redirect_url'] : '/index.php';
+            header("Location: " . $redirect_url);
+            exit();
+        
+          
 
         } else {
-            $_SESSION["err"] =  "Email not verified. Please verify your email before logging in.";
+            $_SESSION["login_err"] =  "Email not verified. Please verify your email before logging in.";
         }
     } else {
-        $_SESSION["err"] = "Invalid username or password";
+        $_SESSION["login_err"] = "Invalid username or password";
     }
 }
-
-header("Location: /index.php");
-exit();
 
 ?>

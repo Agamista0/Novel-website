@@ -1,6 +1,8 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+
   } 
   if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
     echo'<link rel="stylesheet" href="assets/css/includes/darkmode.css">';

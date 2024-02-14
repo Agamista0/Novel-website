@@ -1,13 +1,17 @@
 <?php
-session_start();
-$userId = NULL;
-
-if (isset($_SESSION['user_id']
-)) {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+    $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+} 
+if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
+    echo'<link rel="stylesheet" href="assets/css/includes/darkmode.css">';
+} 
+$userId=null ;
+if (isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
 }
 $bookId = $_GET['book_id'];
- include "php/db.php" ;
+include "php/db.php" ;
 
 $query_book = "SELECT * FROM (SELECT * ,ROW_NUMBER() OVER (ORDER BY views DESC) AS book_rank FROM books)AS ranked_books WHERE id =:book_id";
 $stmt_book = $pdo->prepare($query_book);
@@ -39,6 +43,7 @@ if ($existingBookmark) {
 } else {
      $bookmarked_or_not = 1;
 }
+$genreList = explode(',', $book['genres']);
 
 ?>
 <!DOCTYPE html>
@@ -71,10 +76,10 @@ if ($existingBookmark) {
                     <div class="info-for-phone">
                         <div class="category-link-div-for-phone">
                     <div class="options-phone">
-                    <a href="">
-                         Category - Action 
+                    <a href="advanced.php?genres%5B%5D=<?php echo urlencode(trim($genreList[0])); ?>">
+                         Category - <?php echo $genreList[0]; ?> 
                            </a>
-                           <button class="bookmarks-btn bookmarks-btn-phone" data-id="<?php echo $_GET['book_id']?>">
+                           <button class="bookmarks-btn bookmarks-btn-phone" id="bookmarks" data-id="<?php echo $_GET['book_id']?>">
                            <?php if ($bookmarked_or_not === 1){
                     echo "<i class='fa-solid fa-bookmark' ></i><p class='Bookmarked-p'>Bookmarked</p>
                     ";
@@ -85,8 +90,8 @@ if ($existingBookmark) {
                            <p class="title-for-phone">Alchemy Emperor of the Divine Dao</p>
                         <div class="info-links-phone">
                             <p class="">Completed . <?php echo $book['views'] ?> Views</p>
-                            <p>Ranked 22th</p>
-                            <p class="">1,180 chapters </p>
+                            <p>Ranked <?php echo $book['book_rank'] ?>th</p>
+                            <p class=""><?php echo $num_chapters ?> chapters </p>
                         </div>
                         </div>
                     </div>
@@ -132,10 +137,10 @@ if ($existingBookmark) {
                     <div class="novel-info-p-div">
                         <p class="novel-info-p">Genre(s)</p>
                         <div>  
-                            <?php $genreList = explode(',', $book['genres']);
-                                    foreach ($genreList as $genre) {
+                            <?php
+                                   foreach ($genreList as $genre) {
                                         echo '<a href="advanced.php?genres%5B%5D='.trim($genre).'" class="tag-link"> ' .trim($genre). ' </a>';
-                                    } ?>                        
+                                    } ?>                         
                         </div>
                     </div>
     
@@ -147,10 +152,10 @@ if ($existingBookmark) {
     
     
                     <div class="btns">
-                        <button>Read First</button>
-                        <button>Read Last</button>
+                        <button id="readFirstBtn">Read First</button>
+                        <button id="readLastBtn">Read Last</button>
                     </div>
-    
+                        
     
                 </div>
             </div>   
@@ -300,25 +305,37 @@ if ($existingBookmark) {
      $('.novel-container-books').on('click', '.bookmarks-btn-normal, .bookmarks-btn-phone', function(){
         var button = $(this);
         var bookId = button.data('id');
-        $.ajax({
-            type: "POST",
-            url: "php/bookmarks-save.php",
-            data: { book_id: bookId },
-            success: function(response){
-                console.log("Data sent successfully");
-                console.log("Response from server:", response); 
-                var isBookmarked = response.trim() === 'added'; 
-                updateButtonUI(button, isBookmarked); 
-                 var otherButton = button.hasClass('bookmarks-btn-normal') ? $(".bookmarks-btn-phone") : $(".bookmarks-btn-normal");
-                updateButtonUI(otherButton, isBookmarked);
-            },
-            error: function(){
-                console.error("Error sending data");
-            }
-        });
-    });
+        // Check if the user is logged in (you can adjust this condition as per your session management)
+        var isLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+
+        // If the user is not logged in, open the login modal
+        if (!isLoggedIn) {
+            var modalLogin = document.querySelector('.modal-login');
+            modalLogin.style.display = 'flex';
+        } else {
+            // If the user is logged in, proceed to the user settings page
+            $.ajax({
+                type: "POST",
+                url: "php/bookmarks-save.php",
+                data: { book_id: bookId },
+                success: function(response){
+                    console.log("Data sent successfully");
+                    console.log("Response from server:", response); 
+                    var isBookmarked = response.trim() === 'added'; 
+                    updateButtonUI(button, isBookmarked); 
+                     var otherButton = button.hasClass('bookmarks-btn-normal') ? $(".bookmarks-btn-phone") : $(".bookmarks-btn-normal");
+                    updateButtonUI(otherButton, isBookmarked);
+                },
+                error: function(){
+                    console.error("Error sending data");
+                }
+            });
+        }});
 });
  
+
+
+
 $(document).ready(function() {
     $('.chapter-row').click(function() {
         var chapterId = $(this).data('id');
@@ -374,6 +391,33 @@ document.addEventListener('DOMContentLoaded', function() {
     xhr.send('rating=' + encodeURIComponent(value));
   }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to handle "Read First" button click
+    document.querySelector('#readLastBtn').addEventListener('click', function() {
+        const firstChapter = document.querySelector('.chapter-row');
+        if (firstChapter) {
+            const chapterTitle = firstChapter.getAttribute('data-title');
+            window.location.href = `chapter-page.php?title=${chapterTitle}`;
+        } else {
+            alert('No chapters available.');
+        }
+    });
+
+    // Function to handle "Read Last" button click
+    document.querySelector('#readFirstBtn').addEventListener('click', function() {
+        const chapters = document.querySelectorAll('.chapter-row');
+        if (chapters.length > 0) {
+            const lastChapter = chapters[chapters.length - 1];
+            const chapterTitle = lastChapter.getAttribute('data-title');
+            window.location.href = `chapter-page.php?title=${chapterTitle}`;
+        } else {
+            alert('No chapters available.');
+        }
+    });
+});
+
+
 
 
 

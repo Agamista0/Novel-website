@@ -32,7 +32,7 @@ if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
 
     <div class="user-content-container">
         <div class="user-settings-left-side">
-            <a href="user-page-bookmarks.php" ><i class="fa-solid fa-bookmark"></i> Bookmarks</a>
+            <a href="" ><i class="fa-solid fa-bookmark"></i> Bookmarks</a>
             <a href="history.php" ><i class="fas fa-history"></i> History</a>
             <a href="reader-settings.php" class="highlight"> <i class="fa-solid fa-gear"></i> Reader Settings</a>
             <a href="account.php" ><i class="fa-solid fa-user"></i> Account Settings</a>

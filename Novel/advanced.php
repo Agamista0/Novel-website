@@ -1,6 +1,7 @@
 <?php 
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
+  $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
 } 
 if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
   echo'<link rel="stylesheet" href="assets/css/includes/darkmode.css">';
@@ -76,42 +77,42 @@ include 'php/advanced.php';
         </div>
         <div class="checkbox-column">
           <label>
-            <input type="checkbox" name="genres[]" value="Martial Arts" <?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Martial Arts </label>
+            <input type="checkbox" name="genres[]" value="Martial Arts" <?php echo (isset($_GET['genres']) && in_array('Martial Arts', $_GET['genres'])) ? 'checked' : ''; ?>> Martial Arts </label>
           <br>
           <label>
-            <input type="checkbox" name="genres[]" value="Mature"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Mature </label>
+            <input type="checkbox" name="genres[]" value="Mature"<?php echo (isset($_GET['genres']) && in_array('Mature', $_GET['genres'])) ? 'checked' : ''; ?>> Mature </label>
           <br>
           <label>
-            <input type="checkbox" name="genres[]" value="Mecha"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Mecha </label>
+            <input type="checkbox" name="genres[]" value="Mecha"<?php echo (isset($_GET['genres']) && in_array('Mecha', $_GET['genres'])) ? 'checked' : ''; ?>> Mecha </label>
           <br>
           <label>
-            <input type="checkbox" name="genres[]" value="Mystery"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Mystery </label>
+            <input type="checkbox" name="genres[]" value="Mystery"<?php echo (isset($_GET['genres']) && in_array('Mystery', $_GET['genres'])) ? 'checked' : ''; ?>> Mystery </label>
           <br>
           <label>
-            <input type="checkbox" name="genres[]" value="Psychological"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Psychological </label>
+            <input type="checkbox" name="genres[]" value="Psychological"<?php echo (isset($_GET['genres']) && in_array('Psychological', $_GET['genres'])) ? 'checked' : ''; ?>> Psychological </label>
           <br>
           <label>
-            <input type="checkbox" name="genres[]" value="Romance"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Romance </label>
+            <input type="checkbox" name="genres[]" value="Romance"<?php echo (isset($_GET['genres']) && in_array('Romance', $_GET['genres'])) ? 'checked' : ''; ?>> Romance </label>
           <br>
         </div>
         <div class="checkbox-column">
           <label>
-            <input type="checkbox" name="genres[]" value="School Life"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> School Life </label>
+            <input type="checkbox" name="genres[]" value="School Life"<?php echo (isset($_GET['genres']) && in_array('School Life', $_GET['genres'])) ? 'checked' : ''; ?>> School Life </label>
           <br>
           <label>
-            <input type="checkbox" name="genres[]" value="Sci-fi"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Sci-fi </label>
+            <input type="checkbox" name="genres[]" value="Sci-fi"<?php echo (isset($_GET['genres']) && in_array('Sci-fi', $_GET['genres'])) ? 'checked' : ''; ?>> Sci-fi </label>
           <br>
           <label>
-            <input type="checkbox" name="genres[]" value="Seinen"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Seinen </label>
+            <input type="checkbox" name="genres[]" value="Seinen"<?php echo (isset($_GET['genres']) && in_array('Seinen', $_GET['genres'])) ? 'checked' : ''; ?>> Seinen </label>
           <br>
           <label>
-            <input type="checkbox" name="genres[]" value="Shoujo"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Shoujo </label>
+            <input type="checkbox" name="genres[]" value="Shoujo"<?php echo (isset($_GET['genres']) && in_array('Shoujo', $_GET['genres'])) ? 'checked' : ''; ?>> Shoujo </label>
           <br>
           <label>
-            <input type="checkbox" name="genres[]" value="Shounen"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Shounen </label>
+            <input type="checkbox" name="genres[]" value="Shounen"<?php echo (isset($_GET['genres']) && in_array('Shounen', $_GET['genres'])) ? 'checked' : ''; ?>> Shounen </label>
           <br>
           <label>
-            <input type="checkbox" name="genres[]" value="Slice of Life"<?php echo (isset($_GET['genres']) && in_array('Josei', $_GET['genres'])) ? 'checked' : ''; ?>> Slice of Life </label>
+            <input type="checkbox" name="genres[]" value="Slice of Life"<?php echo (isset($_GET['genres']) && in_array('Slice of Life', $_GET['genres'])) ? 'checked' : ''; ?>> Slice of Life </label>
           <br>
         </div>
         <div class="checkbox-column">

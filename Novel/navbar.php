@@ -9,11 +9,12 @@
 </head>
 <body>
          
-<div class="modal" <?php if(isset($_SESSION['err'])) {echo'style="display:flex;"';} ?> >
+<div class="modal" <?php if(isset($_SESSION['Signup_err']) || isset($_SESSION['Signup']) ) {echo'style="display:flex;"';} ?> >
         <div class="modal-content" >
             <span class="close">&times;</span>
-            <h2>Signup for BoxNovel</h2>
-            <?php if(isset($_SESSION['err'])) {echo'<div class="err">'.  $_SESSION['err'] . '</div>' ; unset($_SESSION['err']);} ?>
+            <h2>Signup for JadeNovels</h2>
+            <?php if(isset($_SESSION['Signup'])) {echo'<div class="success">'.  $_SESSION['Signup'] . '</div>' ; unset($_SESSION['Signup']);} ?>
+            <?php if(isset($_SESSION['Signup_err'])) {echo'<div class="err">'.  $_SESSION['Signup_err'] . '</div>' ; unset($_SESSION['Signup_err']);} ?>
             <form id="signup-form" action="includes/signup.php" method="post">
                 <div class="form-group">
                     <label for="username">Username</label>
@@ -35,12 +36,12 @@
             </div>
         </div>
     </div>
-    <div class="modal-login" <?php if(isset($_SESSION['success'])) {echo'style="display:flex;"';} ?>>
+    <div class="modal-login" <?php if(isset($_SESSION['login_err'])) {echo'style="display:flex;"';} ?>>
         <div class="modal-content">
           
             <span class="close-login">&times;</span>
             <h2>Sign In to Jade Novels</h2>
-            <?php if(isset($_SESSION['success'])) {echo'<div class="err">'.  $_SESSION['success'] . '</div>' ; unset($_SESSION['success']);} ?>
+            <?php if(isset($_SESSION['login_err'])) {echo'<div class="err">'.  $_SESSION['login_err'] . '</div>' ; unset($_SESSION['login_err']);} ?>
             <form id="login-form" action="includes/signin.php" method="post">
                 <div class="form-group">
                     <label for="username_email">Username or Email Address</label>
@@ -58,8 +59,7 @@
             </form>
             <div class="options">
                 <p>Lost your password? <a href="#">Reset Password</a></p>
-                <p>← Back to BoxNovel</p>
-            </div>
+             </div>
         </div>
     </div>
 <div class="overaly">
@@ -90,6 +90,7 @@
             <li>
               <a href="advanced.php?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a>
             </li>
+            
           </ul>
         </div>
       </div>
@@ -104,22 +105,22 @@
     <div class="custom-secondary-navbar">
       <ul class="custom-secondary-navbar-ul">
         <li>
-          <a href="#">ACTION</a>
+          <a href="/advanced.php?genres%5B%5D=Action">ACTION</a>
         </li>
         <li>
-          <a href="#">ADVENTURE</a>
+          <a href="/advanced.php?genres%5B%5D=Adventure">ADVENTURE</a>
         </li>
         <li>
-          <a href="#">FANTASY</a>
+          <a href="/advanced.php?genres%5B%5D=Fantasy">FANTASY</a>
         </li>
         <li>
-          <a href="#">ROMANCE</a>
+          <a href="/advanced.php?genres%5B%5D=Romance">ROMANCE</a>
         </li>
         <li>
-          <a href="#">HAREM</a>
+          <a href="/advanced.php?genres%5B%5D=Harem">HAREM</a>
         </li>
         <li>
-          <a href="#">MARTIAL ARTS</a>
+          <a href="/advanced.php?genres%5B%5D=Martial+Arts">MARTIAL ARTS</a>
         </li>
         <li>
           <a  class="MORE" href="#" onmouseover="toggleDropdown(true)" onmouseout="toggleDropdown(false)">MORE <i class="fa-solid fa-caret-left fa-flip-horizontal"></i></a>
@@ -127,13 +128,13 @@
       </ul>
       <ul class="custom-secondary-navbar-ul phone">
         <li>
-          <a href="#">ACTION</a>
+          <a href="/advanced.php?genres%5B%5D=Action">ACTION</a>
         </li>
         <li>
-          <a href="#">ADVENTURE</a>
+          <a href="/advanced.php?genres%5B%5D=Adventure">ADVENTURE</a>
         </li>
         <li>
-          <a href="#">FANTASY</a>
+          <a href="/advanced.php?genres%5B%5D=Fantasy">FANTASY</a>
         </li>
         
       </ul>
@@ -141,68 +142,68 @@
       <ul class="nav-list-dropdown">
      <ul>
      <li>
-            <a href="#">KOREAN NOVEL</a>
+            <a href="/advanced.phptags=KOREAN+NOVEL">KOREAN NOVEL</a>
           </li>
           <li>
-            <a href="#">JAPANESE NOVEL</a>
+            <a href="/advanced.php?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a>
           </li>
           <li>
-            <a href="#">ECCHI</a>
+            <a href="/advanced.php?genres%5B%5D=Ecchi">ECCHI</a>
           </li>
      </ul>
           <ul>
           <li>
-            <a href="#">SHOUNEN</a>
+            <a href="/advanced.php?genres%5B%5D=Shounen">SHOUNEN</a>
           </li>
           <li>
-            <a href="#">COMEDY</a>
+            <a href="/advanced.php?genres%5B%5D=Comedy">COMEDY</a>
           </li>
           <li>
-            <a href="#">SCHOOL LIFE</a>
-          </li>
-          </ul>
-          <ul>
-          <li>
-            <a href="#">DRAMA</a>
-          </li>
-          <li>
-            <a href="#">HORROR</a>
-          </li>
-          <li>
-            <a href="#">SHOUJO</a>
+            <a href="/advanced.php?genres%5B%5D=School+Life">SCHOOL LIFE</a>
           </li>
           </ul>
           <ul>
           <li>
-            <a href="#">JOSEI</a>
+            <a href="/advanced.php?genres%5B%5D=Drama">DRAMA</a>
           </li>
           <li>
-            <a href="#">MATURE</a>
+            <a href="/advanced.php?genres%5B%5D=Horror">HORROR</a>
           </li>
           <li>
-            <a href="#">MYSTERY</a>
-          </li>
-          </ul>
-          <ul>
-          <li>
-            <a href="#">PSYCHOLOGICAL</a>
-          </li>
-          <li>
-            <a href="#">SCI-FI</a>
-          </li>
-          <li>
-            <a href="#">SEINEN</a>
+            <a href="/advanced.php?genres%5B%5D=Shoujo">SHOUJO</a>
           </li>
           </ul>
           <ul>
           <li>
-            <a href="#">SLICE OF LIFE</a>
+            <a href="/advanced.php?genres%5B%5D=Josei">JOSEI</a>
           </li>
           <li>
-            <a href="#">TRAGEDY</a>
+            <a href="/advanced.php?genres%5B%5D=Mature">MATURE</a>
           </li>
           <li>
-            <a href="#">SUPERNATURAL</a>
+            <a href="/advanced.php?genres%5B%5D=Mystery">MYSTERY</a>
+          </li>
+          </ul>
+          <ul>
+          <li>
+            <a href="/advanced.php?genres%5B%5D=Psychological">PSYCHOLOGICAL</a>
+          </li>
+          <li>
+            <a href="/advanced.php?genres%5B%5D=Sci-fi">SCI-FI</a>
+          </li>
+          <li>
+            <a href="/advanced.php?genres%5B%5D=Seinen">SEINEN</a>
+          </li>
+          </ul>
+          <ul>
+          <li>
+            <a href="/advanced.php?genres%5B%5D=Slice+of+Life">SLICE OF LIFE</a>
+          </li>
+          <li>
+            <a href="/advanced.php?genres%5B%5D=Tragedy">TRAGEDY</a>
+          </li>
+          <li>
+            <a href="/advanced.php?genres%5B%5D=Supernatural">SUPERNATURAL</a>
           </li>
           </ul>
       </ul>
@@ -225,41 +226,41 @@
     <ul class="dropdown" id="myDropdown" >
     <ul>
     <li>
-            <a href="#">KOREAN NOVEL</a>
+            <a href="advanced.php?tags=KOREAN+NOVEL">KOREAN NOVEL</a>
           </li>
           <li>
-            <a href="#">JAPANESE NOVEL</a>
+            <a href="advanced.php?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a>
           </li>
           <li>
-            <a href="#">ECCHI</a>
+            <a href="/advanced.php?genres%5B%5D=Ecchi">ECCHI</a>
           </li>
           <li>
-            <a href="#">SHOUNEN</a>
+            <a href="/advanced.php?genres%5B%5D=Shounen">SHOUNEN</a>
           </li>
           <li>
-            <a href="#">COMEDY</a>
+            <a href="/advanced.php?genres%5B%5D=Comedy">COMEDY</a>
           </li>
           <li>
-            <a href="#">SCHOOL LIFE</a>
+            <a href="/advanced.php?genres%5B%5D=School+Life">SCHOOL LIFE</a>
           </li>
           <li>
-            <a href="#">DRAMA</a>
+            <a href="/advanced.php?genres%5B%5D=Drama">DRAMA</a>
           </li>
           <ul>
       <li>
-            <a href="#">HORROR</a>
+            <a href="/advanced.php?genres%5B%5D=Horror">HORROR</a>
           </li>
           <li>
-            <a href="#">SHOUJO</a>
+            <a href="/advanced.php?genres%5B%5D=Shoujo">SHOUJO</a>
           </li>
           <li>
-            <a href="#">JOSEI</a>
+            <a href="/advanced.php?genres%5B%5D=Josei">JOSEI</a>
           </li>
           <li>
-            <a href="#">MATURE</a>
+            <a href="/advanced.php?genres%5B%5D=Mature">MATURE</a>
           </li>
           <li>
-            <a href="#">MYSTERY</a>
+            <a href="/advanced.php?genres%5B%5D=Mystery">MYSTERY</a>
           </li>
       </ul>
     </ul>
@@ -268,22 +269,22 @@
 
    <ul>
    <li>
-            <a href="#">PSYCHOLOGICAL</a>
+            <a href="/advanced.php?genres%5B%5D=Psychological">PSYCHOLOGICAL</a>
           </li>
           <li>
-            <a href="#">SCI-FI</a>
+            <a href="/advanced.php?genres%5B%5D=Sci-fi">SCI-FI</a>
           </li>
           <li>
-            <a href="#">SEINEN</a>
+            <a href="/advanced.php?genres%5B%5D=Seinen">SEINEN</a>
           </li>
           <li>
-            <a href="#">SLICE OF LIFE</a>
+            <a href="/advanced.php?genres%5B%5D=Slice+of+Life">SLICE OF LIFE</a>
           </li>
           <li>
-            <a href="#">TRAGEDY</a>
+            <a href="/advanced.php?genres%5B%5D=Tragedy">TRAGEDY</a>
           </li>
           <li>
-            <a href="#">SUPERNATURAL</a>
+            <a href="/advanced.php?genres%5B%5D=Supernatural">SUPERNATURAL</a>
           </li>
    </ul>
         </ul>
@@ -309,13 +310,17 @@
 ?>
   </div>
 
-              <ul>
-    <li><a href="user-page-bookmarks.php">User Settings</a></li>
-    <li><a href="advanced.php">ALL NOVEL</a></li>
-    <li><a href="advanced.php?status=Completed">COMPLETED</a></li>
-    <li><a href="advanced.php?tags=CHINESE+NOVEL">CHINESE NOVEL</a></li>
-    <li><a href="advanced.php?tags=KOREAN+NOVEL">KOREAN NOVEL</a></li>
-    <li><a href="advanced.php?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a></li>
+<ul class="phoneli">
+    <li><a class="" href="user-page-bookmarks.php">User Settings</a></li>
+    <li><a class=" " href="advanced.php">ALL NOVEL</a></li>
+    <li><a class=" " href="advanced.php?status=Completed">COMPLETED</a></li>
+    <li><a class=" " href="advanced.php?tags=CHINESE+NOVEL">CHINESE NOVEL</a></li>
+    <li><a class=" " href="advanced.php?tags=KOREAN+NOVEL">KOREAN NOVEL</a></li>
+    <li><a class=" " href="advanced.php?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a></li>
+    <?php if(isset($_SESSION['user_id'])) 
+      echo '<li><a class=" " href="logOut.php">LOGOUT</a></li>' ;
+    ?>
+
 </ul>
         </div>
         </div>
@@ -400,20 +405,24 @@
         modalLogin.style.display = 'none';
       });
     });
-
+    const navbarPhoneBtns = document.querySelector('.navbar-phone-btns');
+    const phoneli = document.querySelector('.phoneli');
     const navbarPhone = document.querySelector('.navbar-phone');
     const toggler = document.querySelector('.fa-bars');
-    const overlay = document.querySelector('.overlay');
     const xBtn = document.querySelector('.x-btn');
 
     toggler.addEventListener('click', function () {
       navbarPhone.classList.toggle('navbar-phone-show');
-      overlay.classList.toggle('show-flex');
+      navbarPhoneBtns.classList.toggle('show-block');
+      phoneli.classList.toggle('show-block');
+
     });
 
     xBtn.addEventListener('click', function () {
       navbarPhone.classList.remove('navbar-phone-show');
-      overlay.classList.remove('show-flex');
+      navbarPhoneBtns.classList.remove('show-block');
+      phoneli.classList.remove('show-block');
+
     });
   });
 
@@ -454,6 +463,29 @@ const logo = document.getElementById('logo');
 logo.addEventListener('click', function() {
   // Redirect to index.php
   window.location.href = 'index.php';
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Select the user settings button
+    var userSettingsButton = document.querySelector('a[href="user-page-bookmarks.php"]');
+
+    // Add event listener to the user settings button
+    userSettingsButton.addEventListener('click', function (event) {
+        // Prevent the default action of the link
+        event.preventDefault();
+
+        // Check if the user is logged in (you can adjust this condition as per your session management)
+        var isLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+
+        // If the user is not logged in, open the login modal
+        if (!isLoggedIn) {
+            var modalLogin = document.querySelector('.modal-login');
+            modalLogin.style.display = 'flex';
+        } else {
+            // If the user is logged in, proceed to the user settings page
+            window.location.href = userSettingsButton.getAttribute('href');
+        }
+    });
 });
 </script>
 </body>
