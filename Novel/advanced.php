@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
   $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
 } 
 if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
-  echo'<link rel="stylesheet" href="assets/css/includes/darkmode.css">';
+  echo'<link rel="stylesheet" href="/assets/css/includes/darkmode.css">';
 } 
 include 'php/advanced.php';
 ?>
@@ -14,7 +14,7 @@ include 'php/advanced.php';
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/advanced.css">
+    <link rel="stylesheet" href="/assets/css/advanced.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Advanced</title>
   </head>
@@ -23,7 +23,7 @@ include 'php/advanced.php';
 
   <?php include "navbar.php"?>
   
- <form class="form-div" style="position:absloute;" action="advanced.php" method="GET">
+ <form class="form-div" style="position:absloute;" action="advanced" method="GET">
     <div class="search-bar-container">
       <div class="testetests">
         <div class="search-bar-div">
@@ -225,26 +225,22 @@ include 'php/advanced.php';
             $release_date = $book['release_date'];
             $ratting =  $book['sum_ratings'];
 
-            $query_count_chapters = "SELECT COUNT(*) AS num_chapters FROM chapters WHERE book_id = :book_id";
-            $stmt_count_chapters = $pdo->prepare($query_count_chapters);
-            $stmt_count_chapters->bindParam(':book_id',$book['id']);
-            $stmt_count_chapters->execute();
-            $count_result = $stmt_count_chapters->fetch(PDO::FETCH_ASSOC);
-            $num_chapters = $count_result['num_chapters'];
-
-            $query = "SELECT time_created FROM chapters WHERE book_id = ? ORDER BY time_created DESC LIMIT 1";
+            $query = "SELECT time_created, chapter_title FROM chapters WHERE book_id = ? ORDER BY time_created DESC LIMIT 1";
             $stmt = $pdo->prepare($query);
             $stmt->execute([$book['id']]);
-            $last_chapter_time = $stmt->fetchColumn();
+            $last_chapter = $stmt->fetch(PDO::FETCH_ASSOC);
             
+            $lastChTitle = $last_chapter['chapter_title'];
+            $words = explode(' ', $lastChTitle);
+            $lastChTitle = implode(' ', array_slice($words, 0, 2));
 
             echo '<div class="novel-card-advanced"  data-id="'.$book['id'].'">';
-            echo '<div class="image-container">';
+            echo '<div class="image-container" data-id="'.$book['id'].'">';
             echo '<div class="colorhoverimg"></div>';
-            echo '<img class="advanced-img" src="' . $img . '" alt="' . $title . '">';
+            echo '<img class="advanced-img"  src="' . $img . '" alt="' . $title . '">';
             echo '</div>';
             echo '<div class="novel-info">';
-            echo '<a class="title-advanced">' . $title . '</a>';
+            echo '<a class="title-advanced"  data-id="'.$book['id'].'">' . $title . '</a>';
             echo '<div class="more-info">';
             echo '<div class="more-info-div">';
             echo '<p class="ttt">Author</p>';
@@ -269,8 +265,8 @@ include 'php/advanced.php';
             echo '<div class="chapter-info">';
             echo '<div class="chapter-info-subdiv">';
             echo '<p class="lattest"> Latest chapter </p>';
-            echo '<p class="chapter-number" > Chapter '.$num_chapters.' </p>';
-            echo '<p class="time">'.$last_chapter_time.'</p>';
+            echo '<a  class="chapter-number" href="chapter-page?title='.$last_chapter['chapter_title'].'">'.$lastChTitle.' </a>';
+            echo '<p class="time">'.$last_chapter['time_created'].'</p>';
             echo '</div>';
             echo '<div class="rating normal">';
             echo '<i class="fa-solid fa-star"></i>';
@@ -303,13 +299,21 @@ include 'php/advanced.php';
   <?php include "footer.php"?>
   </body>
   <script>
-    const novelCardsadvanced = document.querySelectorAll('.novel-card-advanced');
+    const novelCardsadvancedTitle = document.querySelectorAll('.title-advanced');
+    const novelCardsadvancedImg = document.querySelectorAll('.image-container');
+
     
-    
-    novelCardsadvanced.forEach(card => {
+    novelCardsadvancedTitle.forEach(card => {
       card.addEventListener('click', () => {
         const id = card.getAttribute('data-id');
-        const url = `book.php?book_id=${id}`;
+        const url = `/Novel/${id}`;
+        window.location.href = url;
+      });
+    });
+    novelCardsadvancedImg.forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.getAttribute('data-id');
+        const url = `/Novel/${id}`;
         window.location.href = url;
       });
     });

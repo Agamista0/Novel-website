@@ -1,6 +1,6 @@
 <?php
 
-$query = " SELECT b.title, b.img, b.tags, b.author, b.id, b.genres, b.status, b.release_date, b.sum_ratings,
+$query = "SELECT b.title, b.img, b.tags, b.author, b.id, b.genres, b.status, b.release_date, b.sum_ratings,
               MAX(CASE WHEN rn = 1 THEN c.chapter_title END) AS last_chapter_title,
               MAX(CASE WHEN rn = 1 THEN c.time_created END) AS last_chapter_time,
               MAX(CASE WHEN rn = 2 THEN c.chapter_title END) AS penultimate_chapter_title,
@@ -25,10 +25,10 @@ foreach ($result as $row) {
   <div class="novel-card-index"  data-id="<?php echo $row['id']; ?>" > 
             <div class="novel-img"data-id="<?php echo $row['id']; ?>">
           <div class="colorhoverimg" ></div>
-            <img src="<?php echo $row['img']; ?>" alt="<?php echo $row['title']; ?>">
+            <img src="<?php echo $row['img']; ?>" href="/Novel/<?php echo $row['id']; ?>" alt="<?php echo $row['title']; ?>">
           </div>
           <div class="novel-info">
-            <a href="book.php?book_id=<?php echo $row['id'] ?>" class="title"><?php echo $row['title']; ?></a>
+            <a href="/Novel/<?php echo $row['id'] ?>" class="title"><?php echo $row['title']; ?></a>
           <div class="rating">
               <i class="fa-solid fa-star"></i>
               <i class="fa-solid fa-star"></i>
@@ -91,11 +91,11 @@ foreach ($result as $row) {
 
   echo '
   <div class="chapter-container">
-  <a  href="chapter-page.php?title='.$row['last_chapter_title'].'" class="chapter">'.$last_chapter_title.'</a>
+  <a  href="chapter-page?title='.$row['last_chapter_title'].'" class="chapter">'.$last_chapter_title.'</a>
   <p class="time">'.$last_chapter_time.'</p>
   </div> 
   <div class="chapter-container">
-  <a href="chapter-page.php?title='.$row['penultimate_chapter_title'].'" class="chapter"> '.$penultimate_chapter_title.'</a>
+  <a href="chapter-page?title='.$row['penultimate_chapter_title'].'" class="chapter"> '.$penultimate_chapter_title.'</a>
   <p class="time"> '.$time_display.'</p>
 </div>' ;
 } ?>
@@ -114,22 +114,26 @@ foreach ($result as $row) {
         novelCards.forEach(card => {
             const img = card.querySelector('.novel-img img');
             const title = card.querySelector('.novel-info .title');
-
+            
             img.addEventListener('click', () => {
                 const id = card.getAttribute('data-id');
-                const url = `php/views-increase.php?book_id=${id}`;
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            });
+            //     const url = `php/views-increase?book_id=${id}`;
+            //     fetch(url)
+            //         .then(response => {
+            //             if (!response.ok) {
+            //                 throw new Error('Network response was not ok');
+            //             }else{
+            //               window.location.href = `/Novel/${id}`;
+
+            //             }
+            //         })
+            //         .catch(error => console.error('Error:', error));
+            // 
+          });
 
             title.addEventListener('click', () => {
                 const id = card.getAttribute('data-id');
-                const url = `php/views-increase.php?book_id=${id}`;
+                const url = `php/views-increase?book_id=${id}`;
                 fetch(url)
                     .then(response => {
                         if (!response.ok) {

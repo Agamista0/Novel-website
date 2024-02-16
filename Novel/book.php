@@ -4,13 +4,14 @@ if (session_status() === PHP_SESSION_NONE) {
     $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
 } 
 if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
-    echo'<link rel="stylesheet" href="assets/css/includes/darkmode.css">';
+    echo'<link rel="stylesheet" href="/assets/css/includes/darkmode.css">';
 } 
 $userId=null ;
 if (isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
 }
 $bookId = $_GET['book_id'];
+
 include "php/db.php" ;
 
 $query_book = "SELECT * FROM (SELECT * ,ROW_NUMBER() OVER (ORDER BY views DESC) AS book_rank FROM books)AS ranked_books WHERE id =:book_id";
@@ -52,7 +53,7 @@ $genreList = explode(',', $book['genres']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/book.css">
+    <link rel="stylesheet" href="/assets/css/book.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title><?php echo $book['title']; ?></title>
@@ -66,9 +67,11 @@ $genreList = explode(',', $book['genres']);
 
 
         <div class="category-link-div">
-            <a href="" class="category-link">Home/</a>
-            
-            <a href="" class="category-link"><?php echo $book['title']; ?></a>
+            <a href="/" class="category-link">Home/</a>
+            <a href="/advanced?genres%5B%5D=<?php echo urlencode(trim($genreList[0])); ?>">
+                         Category - <?php echo $genreList[0]; ?> 
+                           </a>
+            <a href="" class="category-link">/<?php echo $book['title']; ?></a>
         </div>
              <div class="novel-info-div">
                 <div class="image-container">
@@ -76,7 +79,8 @@ $genreList = explode(',', $book['genres']);
                     <div class="info-for-phone">
                         <div class="category-link-div-for-phone">
                     <div class="options-phone">
-                    <a href="advanced.php?genres%5B%5D=<?php echo urlencode(trim($genreList[0])); ?>">
+
+                    <a href="/advanced?genres%5B%5D=<?php echo urlencode(trim($genreList[0])); ?>">
                          Category - <?php echo $genreList[0]; ?> 
                            </a>
                            <button class="bookmarks-btn bookmarks-btn-phone" id="bookmarks" data-id="<?php echo $_GET['book_id']?>">
@@ -122,7 +126,26 @@ $genreList = explode(',', $book['genres']);
                         <div class="info-links">
                             <div><p><i class="fa-solid fa-pen"></i> <?php echo $book['status']; ?></p></div>
                             <div><p><i class="fa-solid fa-book"></i> <?php echo $num_chapters; ?> Chapters</p></div>
-                            <div><p><i class="fa-solid fa-ranking-star"></i> Ranked <?php echo $book['book_rank'];?>nd </p></div>
+                            <div><p><i class="fa-solid fa-ranking-star"></i> Ranked 
+                                <?php
+                                    // Determine the ordinal suffix based on the book rank
+                                    
+                                    switch ($book['book_rank']) {
+                                        case 1:
+                                            echo $suffix = "1st";
+                                            break;
+                                        case 2:
+                                            echo "2nd";
+                                            break;
+                                        case 3:
+                                            echo "3rd";
+                                            break;
+                                        default:
+                                            echo $book['book_rank'] . "th";
+                                            break;
+                                    }
+                                    ?>  
+                             </p></div>
                             <div><p><i class="fa-solid fa-eye"></i><?php echo $book['views']?> Views</p></div>
                         </div>
                     </div>
@@ -130,7 +153,7 @@ $genreList = explode(',', $book['genres']);
     
                     <div class="novel-info-p-div">
                         <p class="novel-info-p">Author(s)</p>
-                        <a href="advanced.php?author=<?php echo $book['author'];?>" class="tag-link"><?php echo $book['author'];?></a>
+                        <a href="/advanced?author=<?php echo $book['author'];?>" class="tag-link"><?php echo $book['author'];?></a>
                     </div>
     
     
@@ -139,7 +162,7 @@ $genreList = explode(',', $book['genres']);
                         <div>  
                             <?php
                                    foreach ($genreList as $genre) {
-                                        echo '<a href="advanced.php?genres%5B%5D='.trim($genre).'" class="tag-link"> ' .trim($genre). ' </a>';
+                                        echo '<a href="/advanced?genres%5B%5D='.trim($genre).'" class="tag-link"> ' .trim($genre). ' </a>';
                                     } ?>                         
                         </div>
                     </div>
@@ -147,7 +170,7 @@ $genreList = explode(',', $book['genres']);
     
                     <div class="novel-info-p-div">
                         <p class="novel-info-p">Type</p>
-                        <a href="advanced.php?tags=<?php echo $book['tags'];?>" class="tag-link"><?php echo $book['tags'];?></a>
+                        <a href="/advanced?tags=<?php echo $book['tags'];?>" class="tag-link"><?php echo $book['tags'];?></a>
                     </div>
     
     
@@ -203,94 +226,37 @@ $genreList = explode(',', $book['genres']);
             } else {
                 $time_display = date('F j, Y', $chapter_time);
             }  ?>
-            <div class="chapter-row" data-title="<?php echo $chapter['chapter_title'];?>"  data-id="<?php echo $chapter['id'];?>" data-time="<?php echo $chapter['time_created']; ?>">
+            <div class="chapter-row" data-title="<?php echo urlencode($chapter['chapter_title']);?>"  data-id="<?php echo $chapter['id'];?>" data-time="<?php echo $chapter['time_created']; ?>">
                 <a><?php echo $chapter['chapter_title']; ?></a>
                 <p class="time"><?php echo $time_display; ?></p>
             </div>
         <?php endforeach; ?>
-        <div class="Show-More-Div">
+       
+    </div>        
+ 
+</div>
+<div class="Show-More-Div">
             <a class="Show-More-Btn" id="showMoreBtn">
                 Show more <i class="fa-solid fa-chevron-down"></i>
             </a>
         </div>
-    </div>        
-</div>
 <div class="popular-included" style="width:25%; margin-left:12%;">
 <?php include "popular-sections.php"?>
 
 </div>
 <?php include "footer.php"?>
-
+<script src="scripts/sort.js"></script>
 <script>
        const novelCardsbook = document.querySelectorAll('.chapter-row');
 
        novelCardsbook.forEach(card => {
         card.addEventListener('click', () => {
                 const title = card.getAttribute('data-title');
-                const url = `chapter-page.php?title=${title}`;
+                const url = `/chapter/${title}`;
                 window.location.href = url;
         });
         });
-        const arrowIcon = document.querySelector('.fa-arrow-up-wide-short');
-
-        const showMoreBtn = document.getElementById('showMoreBtn');
-    const chaptersContainer = document.querySelector('.chapters');
-    const chapters = document.querySelectorAll('.chapter-row');
-
-    function toggleChapters() {
-        chapters.forEach((chapter, index) => {
-            chapter.style.display = index < 10 ? 'flex' : 'none';
-        });
-    }
-
-    toggleChapters();
-
-    showMoreBtn.addEventListener('click', function() {
-        chapters.forEach((chapter) => {
-            chapter.style.display = 'flex';
-        });
-        this.style.display = 'none';
-    });
-    arrowIcon.addEventListener('click', function() {
-        chapters.forEach((chapter) => {
-            chapter.style.display = 'flex';
-        });
-     });
-
- document.addEventListener('DOMContentLoaded', function() {
- 
-
-    let ascendingOrder = true; // Track the current sorting order
-
-    arrowIcon.addEventListener('click', function() {
-        const chapters = Array.from(chaptersContainer.querySelectorAll('.chapter-row'));
-
-        // Toggle sorting order
-        ascendingOrder = !ascendingOrder;
-
-        // Sort chapters based on their data-time attribute and current sorting order
-        chapters.sort(function(a, b) {
-            const timeA = new Date(a.getAttribute('data-time')).getTime();
-            const timeB = new Date(b.getAttribute('data-time')).getTime();
-
-            if (ascendingOrder) {
-                return timeA - timeB; // Ascending order
-            } else {
-                return timeB - timeA; // Descending order
-            }
-        });
-
-        // Remove existing chapters from the container
-        chaptersContainer.innerHTML = '';
-
-        // Append sorted chapters to the container
-        chapters.forEach(function(chapter) {
-            chaptersContainer.appendChild(chapter);
-        });
-    });
-
-
-});
+      
 
 
     $(document).ready(function(){
@@ -316,7 +282,7 @@ $genreList = explode(',', $book['genres']);
             // If the user is logged in, proceed to the user settings page
             $.ajax({
                 type: "POST",
-                url: "php/bookmarks-save.php",
+                url: "/php/bookmarks-save",
                 data: { book_id: bookId },
                 success: function(response){
                     console.log("Data sent successfully");
@@ -341,7 +307,7 @@ $(document).ready(function() {
         var chapterId = $(this).data('id');
 
         $.ajax({
-            url: 'php/save_to_history.php',
+            url: '/php/save_to_history',
             type: 'POST',
             data: {
                 chapterId: chapterId,
@@ -386,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
     };
-    xhr.open('POST', 'save_rating.php', true);
+    xhr.open('POST', 'save_rating', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send('rating=' + encodeURIComponent(value));
   }
@@ -398,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const firstChapter = document.querySelector('.chapter-row');
         if (firstChapter) {
             const chapterTitle = firstChapter.getAttribute('data-title');
-            window.location.href = `chapter-page.php?title=${chapterTitle}`;
+            window.location.href = `/chapter/${chapterTitle}`;
         } else {
             alert('No chapters available.');
         }
@@ -410,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (chapters.length > 0) {
             const lastChapter = chapters[chapters.length - 1];
             const chapterTitle = lastChapter.getAttribute('data-title');
-            window.location.href = `chapter-page.php?title=${chapterTitle}`;
+            window.location.href = `/chapter/${chapterTitle}`;
         } else {
             alert('No chapters available.');
         }

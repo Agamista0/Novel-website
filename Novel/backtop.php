@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/includes/backtop.css">
+    <link rel="stylesheet" href="/assets/css/includes/backtop.css">
     <title>Document</title>
 </head>
 <body>
@@ -20,7 +20,7 @@
  window.onscroll = function() {scrollFunction()};
 
 function scrollFunction() {
-  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+  if (document.documentElement.scrollTop > 20) {
     document.getElementById("backToTopBtn").style.display = "flex";
   } else {
     document.getElementById("backToTopBtn").style.display = "none";

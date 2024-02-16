@@ -16,7 +16,7 @@ $response = ["success" => false, "message" => ""];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $email = $_POST["email"];
-    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    $password = password_hash($_POST["passwordSignup"], PASSWORD_DEFAULT);
     $verificationCode = md5(uniqid(rand(), true)); // Generate a unique verification code
 
    // Check if email already exists
@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail = new PHPMailer(true);
 
         try {
+            
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com'; // Your SMTP server
             $mail->SMTPAuth   = true;
@@ -55,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             $mail->isHTML(true);
             $mail->Subject = 'Email Verification';
-            $mail->Body    =  '
+            $mail->Body =  '
             <!DOCTYPE html>
             <html lang="en">
             <head>
@@ -147,11 +148,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } 
 
 }
-$redirect_url = isset($_SESSION['redirect_url']) ? $_SESSION['redirect_url'] : '/index.php';
-header("Location: " . $redirect_url);
-exit();
 
 }
 
+$redirect_url = isset($_SESSION['redirect_url']) ? $_SESSION['redirect_url'] : '/index.php';
+header("Location: " . $redirect_url);
+exit();
 
 ?> 

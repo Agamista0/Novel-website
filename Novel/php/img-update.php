@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($success) {
                     $_SESSION['profileimg']= $destPath;
                     $_SESSION['success'] = "File uploaded successfully.";
-                    header("Location: ../account.php");
+                    header("Location: ../account");
                     exit; 
                 } else {
                     $_SESSION['err'] = "Failed to update the database.";
@@ -45,6 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['err'] = "Invalid request method";
 }
 
-header("Location: ../account.php");
+header("Location: ../account");
 exit;
 ?>

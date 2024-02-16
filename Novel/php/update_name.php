@@ -13,17 +13,17 @@ include 'db.php';
         if ($stmt->execute(array(':username' => $newName, ':id' => $_SESSION['user_id']))) {
             $_SESSION['username'] =$newName ;
             $_SESSION['success'] = "Username Has Been Updated Successfully";
-            header("Location: ../account.php");
+            header("Location: ../account");
             exit;  
         } else {
             $_SESSION['err'] = "Something happened. Please try again later.";
-            header("Location: ../account.php");
+            header("Location: ../account");
             exit;  
         }
     }}
     else {
         $_SESSION['err'] = "Invalid request method";
-        header("Location: ../account.php");
+        header("Location: ../account");
         exit;
     }
     ?>

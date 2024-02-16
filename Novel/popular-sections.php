@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/popular-sections.module.css">
+    <link rel="stylesheet" href="/assets/css/popular-sections.module.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Document</title>
 </head>
@@ -54,7 +54,7 @@ foreach ($result as $row) {
                 </div>
                 <div class="novel-info-right">
                     <p class="title-right truncate-text">
-                    <a href="book.php?book_id=<?php echo $row['id'] ?>" class="title-right-link"><?php echo $row['title']; ?></a>
+                    <a href="/Novel/<?php echo $row['id'] ?>" class="title-right-link"><?php echo $row['title']; ?></a>
                     </p>
     <?php if ($row['last_chapter_title'] && $row['penultimate_chapter_title'] ) { 
         // Retrieve the first two syllables of the author's name
@@ -108,7 +108,7 @@ foreach ($result as $row) {
 
         echo '
         <div class="chapter-container-right">
-            <a href="chapter-page.php?title='.$row['last_chapter_title'].'" class="chapter-right">
+            <a href="chapter-page?title='.$row['last_chapter_title'].'" class="chapter-right">
             '.$last_chapter_title.'
             </a>
             <p class="time-right">
@@ -116,7 +116,7 @@ foreach ($result as $row) {
             </p>
         </div>
         <div class="chapter-container-right">
-            <a href="chapter-page.php?title='.$row['penultimate_chapter_title'].'" class="chapter-right">
+            <a href="chapter-page?title='.$row['penultimate_chapter_title'].'" class="chapter-right">
             '.$penultimate_chapter_title.'
             </a>
             <p class="time-right">
@@ -134,7 +134,7 @@ foreach ($result as $row) {
 }
 ?>
          
-        <a href="/advanced.php?sort=most-views&order=dasc" class="more-novels-btn">
+        <a href="/advanced?sort=most-views&order=dasc" class="more-novels-btn">
             Here for more Popular Novel
         </a>
     </div>
@@ -147,7 +147,7 @@ foreach ($result as $row) {
      novelCardsPopular.forEach(card => {
         card.addEventListener('click', () => {
              const id = card.getAttribute('data-id');
-             const url = `book.php?book_id=${id}`;
+             const url = `/Novel/${id}`;
              window.location.href = url;
         });
     });
@@ -157,7 +157,7 @@ foreach ($result as $row) {
             novelCardsPopular.forEach(card => {
                 card.addEventListener('click', () => {
                     const id = card.getAttribute('data-id');
-                    const url = `php/views-increase.php?book_id=${id}`;
+                    const url = `php/views-increase?book_id=${id}`;
                     fetch(url)
                         .then(response => {
                             if (!response.ok) {

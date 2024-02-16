@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 } 
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
+    header("Location: index");
     exit();
 }
 
@@ -25,7 +25,7 @@ if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
   <?php include "backtop.php"?>
 
   <?php include "navbar.php"?>
-<form class="container" action="php/submit-settings.php" method="POST">
+<form class="container" action="php/submit-settings" method="POST">
     <div class="user-settings-header">
         <p>User Settings</p>
     </div>
@@ -33,9 +33,9 @@ if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
     <div class="user-content-container">
         <div class="user-settings-left-side">
             <a href="" ><i class="fa-solid fa-bookmark"></i> Bookmarks</a>
-            <a href="history.php" ><i class="fas fa-history"></i> History</a>
-            <a href="reader-settings.php" class="highlight"> <i class="fa-solid fa-gear"></i> Reader Settings</a>
-            <a href="account.php" ><i class="fa-solid fa-user"></i> Account Settings</a>
+            <a href="history" ><i class="fas fa-history"></i> History</a>
+            <a href="reader-settings" class="highlight"> <i class="fa-solid fa-gear"></i> Reader Settings</a>
+            <a href="account" ><i class="fa-solid fa-user"></i> Account Settings</a>
         </div>
 
         <div class="user-settings-right-side">
@@ -60,16 +60,16 @@ if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
                 </p>
 
                 <div class="containerr">
+                    <input type="radio" class="" name="Site Schema" value="Default" <?php if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] == "Default") echo "checked"; ?>>
+                    <label for=" ">Default</label>
+                </div>
+                <div class="containerr">
                     <input type="radio" class="" name="Site Schema" value="Light" <?php if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] == "Light") echo "checked"; ?>>
                     <label for=" ">Light</label>
                 </div>
                 <div class="containerr">
                     <input type="radio" class="" name="Site Schema" value="Dark" <?php if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] == "Dark") echo "checked"; ?>>
                     <label for=" ">Dark</label>
-                </div>
-                <div class="containerr">
-                    <input type="radio" class="" name="Site Schema" value="Default" <?php if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] == "Default") echo "checked"; ?>>
-                    <label for=" ">Default</label>
                 </div>
             </div>
 

@@ -12,7 +12,7 @@ if (!empty($_POST['old_password']) && !empty($_POST['new_password']) && !empty($
         // Check if new password matches confirm password
         if ($newPassword !== $confirmPassword) {
             $_SESSION['err'] = "New password and confirm password do not match";
-            header("Location: ../account.php");
+            header("Location: ../account");
             exit;  
         }
 
@@ -30,25 +30,25 @@ if (!empty($_POST['old_password']) && !empty($_POST['new_password']) && !empty($
 
             if ($success) {
                 $_SESSION['success'] = "Password has been updated successfully";
-                header("Location: ../account.php");
+                header("Location: ../account");
                 exit;  
             } else {
                 $_SESSION['err'] = "Something went wrong. Please try again later.";
-                header("Location: ../account.php");
+                header("Location: ../account");
                 exit;  
             }
         } else {
             $_SESSION['err'] = "Old password is incorrect";
-            header("Location: ../account.php");
+            header("Location: ../account");
             exit;  
         }
     } else {
         $_SESSION['err'] = "Old, new, and confirm passwords cannot be empty";
-        header("Location: ../account.php");
+        header("Location: ../account");
         exit;  
     }
 } else {
     $_SESSION['err'] = "Invalid request method";
-    header("Location: ../account.php");
+    header("Location: ../account");
     exit;
 }

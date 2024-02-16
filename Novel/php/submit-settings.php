@@ -41,11 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['readingStyle'] = $readingStyle;  
         $_SESSION['imagesPerPage'] = $imagesPerPage;  
  
-        header("Location: ../reader-settings.php");
+        header("Location: ../reader-settings");
         exit();  
     } else {
         $_SESSION['err'] = 'Something Went Wrong!';  
-        header("Location: ../reader-settings.php");
+        header("Location: ../reader-settings");
         exit();  
     }
 }

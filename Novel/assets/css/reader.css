@@ -149,6 +149,12 @@ background-color: #efefef;
 .containerr label{
     font-size: larger;
     color: #888;
+    margin-left:10px;
+
+}
+.containerr{
+    display: flex;
+    align-items: center;
 }
 .btn-submit button{
     margin-top:30px; 

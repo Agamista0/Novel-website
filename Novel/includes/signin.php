@@ -29,18 +29,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $userSettings = $stmtUserSettings->fetch(PDO::FETCH_ASSOC);
 
             // Bind the results to session variables
-            $_SESSION['siteSchema'] = $userSettings['site_schema'];
-            $_SESSION['readingStyle'] = $userSettings['reading_style'];
-            $_SESSION['imagesPerPage'] = $userSettings['images_per_page'];
+            $_SESSION['siteSchema'] = isset($userSettings['site_schema'] ) ? $userSettings['site_schema'] : 'Default' ;
+            $_SESSION['readingStyle'] = isset($userSettings['reading_style'] ) ? $userSettings['reading_style'] : 'Default' ;
+            $_SESSION['imagesPerPage'] = isset($userSettings['images_per_page'] ) ? $userSettings['images_per_page'] : 'Default';
 
             $stmtUserSettings->closeCursor(); // Close the statement
-
-            
-            // Redirect the user back to the stored URL or a default page if no URL is stored
-            $redirect_url = isset($_SESSION['redirect_url']) ? $_SESSION['redirect_url'] : '/index.php';
-            header("Location: " . $redirect_url);
-            exit();
-        
           
 
         } else {
@@ -50,5 +43,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["login_err"] = "Invalid username or password";
     }
 }
+  // Redirect the user back to the stored URL or a default page if no URL is stored
+  $redirect_url = isset($_SESSION['redirect_url']) ? $_SESSION['redirect_url'] : '/index.php';
+  header("Location: " . $redirect_url);
+  exit();
+
 
 ?>

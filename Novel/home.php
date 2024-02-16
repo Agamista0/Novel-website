@@ -7,7 +7,6 @@ if (session_status() === PHP_SESSION_NONE) {
 if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
   echo'<link rel="stylesheet" href="assets/css/includes/darkmode.css">';
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,6 +46,26 @@ if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
         <?php include "popular-sections.php"?>
       </div>
     </div> <?php include "footer.php"?>
+    <script>
+       const successMessage = document.querySelector('.success');
+    // If the success message div exists, show it and then hide it after 5 seconds
+    if (successMessage) {
+        successMessage.style.display = 'block';
+        setTimeout(function() {
+            successMessage.style.display = 'none';
+        }, 3000); // 5000 milliseconds = 5 seconds
+    }
+     // Get the error message div
+     const errorMessage = document.querySelector('.err');
+
+    // If the error message div exists, show it and then hide it after 5 seconds
+    if (errorMessage) {
+    errorMessage.style.display = 'block';
+    setTimeout(function() {
+        errorMessage.style.display = 'none';
+    }, 3000); // 5000 milliseconds = 5 seconds
+}
+    </script>
   </body>
   
 </html>

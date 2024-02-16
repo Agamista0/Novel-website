@@ -17,6 +17,7 @@
     right: 10px;
     align-items: center;
     justify-content: center;
+    display: none;
 }
 .backtotop:hover{
     background-color: #52aa6d;

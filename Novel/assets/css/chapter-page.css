@@ -3,8 +3,7 @@
     padding-left: 15%;
     padding-right: 15%;
     padding-top:50px;
-    padding-bottom: 40px;
-}
+ }
 .category-link-div a{
     margin-bottom: 30px;
     color: #666;    
@@ -16,22 +15,25 @@
      color: #52aa6d;
 }
 .bookmarks-btn{
+    background-color: transparent;
     width: 30px;
     height: 30px;
-    display: block;
-    text-align: center;
-    background-color: #ebebeb;
-    position: relative;
+     text-align: center;
+     position: relative;
     border-radius: 50%;
     color: #52aa6d;
     -webkit-transition: all ease-in-out .2s;
     -moz-transition: all ease-in-out .2s;
     -o-transition: all ease-in-out .2s;
     transition: all ease-in-out .2s;
-    border:0px;
+border:0px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+font-size: 17px;
 }
 .bookmarks-btn:hover{
-    background-color: #52aa6d;
     color: rgb(0, 0, 0);
 }
 .section{
@@ -158,4 +160,25 @@
         background-color: transparent;
     }
 }
+@media (max-width: 550px) {
+    .custom-select {
+        position: relative;
+        width: 310px;  
+    }
+    .button-bookmarks-phone{
+        display: flex !important;
+     }
+     .bookmarks-btn-normal{
+        display: none !important;
+     }
+}
  
+.button-bookmarks-phone{
+     justify-content: center;
+    align-items: center;
+display: none;
+}
+.bookmarks-btn-phone{
+font-size: 21px;
+
+}

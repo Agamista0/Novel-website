@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
+    header("Location: index");
     exit();
 }
 if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
@@ -35,10 +35,10 @@ include './php/db.php';
         <div class="user-content-container">
 
             <div class="user-settings-left-side">
-                <a href="user-page-bookmarks.php" ><i class="fa-solid fa-bookmark"></i> Bookmarks</a>
-                <a href="history.php" class="highlight"><i class="fas fa-history"></i> History</a>
-                <a href="reader-settings.php"><i class="fa-solid fa-gear"></i> Reader Settings</a>
-                <a href="account.php"><i class="fa-solid fa-user"></i> Account Settings</a>
+                <a href="user-page-bookmarks" ><i class="fa-solid fa-bookmark"></i> Bookmarks</a>
+                <a href="history" class="highlight"><i class="fas fa-history"></i> History</a>
+                <a href="reader-settings"><i class="fa-solid fa-gear"></i> Reader Settings</a>
+                <a href="account"><i class="fa-solid fa-user"></i> Account Settings</a>
             </div>
 
             <div class="user-settings-right-side">

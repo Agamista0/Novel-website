@@ -1,16 +1,23 @@
 <?php
+include 'php/db.php';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
     $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
 
   } 
   if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
-    echo'<link rel="stylesheet" href="assets/css/includes/darkmode.css">';
+    echo'<link rel="stylesheet" href="/assets/css/includes/darkmode.css">';
 } 
-  
-include 'php/db.php';
 
-$title = isset($_GET['title']) ? $_GET['title'] : '';
+$uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Extract the title from the URI path
+$title = basename($uri_path);
+
+// Decode the URL-encoded title
+$title = urldecode($title);;
+
 
 $query = "SELECT book_id , chapter_title , chapter_text FROM chapters WHERE chapter_title = :title";
 $stmt = $pdo->prepare($query);
@@ -42,6 +49,20 @@ $stmt_tags = $pdo->prepare($query_tags);
 $stmt_tags->bindParam(':book_id', $chapter['book_id'], PDO::PARAM_INT);
 $stmt_tags->execute();
 $tags_result = $stmt_tags->fetch(PDO::FETCH_ASSOC);
+
+$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'Null';
+
+
+$stmt = $pdo->prepare("SELECT book_id FROM bookmarks WHERE user_id = ? AND book_id = ?");
+$stmt->execute([$userId, $book_id ]);
+$existingBookmark = $stmt->fetch();
+
+if ($existingBookmark) {
+     $bookmarked_or_not = 0;
+} else {
+     $bookmarked_or_not = 1;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -49,8 +70,9 @@ $tags_result = $stmt_tags->fetch(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/chapter-page.css">
+    <link rel="stylesheet" href="/assets/css/chapter-page.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <title>Chapter Page</title>
 </head>
 <body>
@@ -60,14 +82,30 @@ $tags_result = $stmt_tags->fetch(PDO::FETCH_ASSOC);
     <div class="novel-container">
         <div class="section">
             <div class="category-link-div">
-                <a href="" class="category-link">Home/</a>
-                <a href="" class="category-link"><?php echo $tags_result['title'] ?>/</a>
+                <a href="/home" class="category-link">Home/</a>
+                <a href="/Novel/<?php echo $chapter['book_id'] ?>" class="category-link"><?php echo $tags_result['title'] ?>/</a>
                 <a href="" class="category-link"><?php echo $result['chapter_title'] ?></a>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             </div>
-            <button class="bookmarks-btn">
-                <i class="fa-solid fa-bookmark"></i>
+            <button class="bookmarks-btn bookmarks-btn-normal"  data-id="<?php echo $book_id; ?>">
+            <?php if ($bookmarked_or_not === 1){
+                    echo "<i class='fa-solid fa-bookmark check-bookmarks-normal'></i>
+                    <p>Bookmark</p>";
+                }
+                else {echo"<i class='fa-solid fa-check'></i><p>Bookmarked</p>";}?>
+
             </button>
         </div>
+<div class="button-bookmarks-phone"  >
+<button class="bookmarks-btn bookmarks-btn-phone" data-id="<?php  echo $book_id; ?>">
+        <?php if ($bookmarked_or_not === 1){
+            echo "<i class='fa-solid fa-bookmark' ></i><p class='Bookmarked-p'>Bookmark</p>";
+        }
+        else {
+            echo"<i class='fa-solid fa-check check-bookmarks-phone'></i><p class='Bookmarked-p'>Bookmarked</p>";
+        }?>
+    </button>
+</div>
         <div class="section section-select">
             <div class="custom-select">
                 <select id="chapterSelect">
@@ -76,10 +114,10 @@ $tags_result = $stmt_tags->fetch(PDO::FETCH_ASSOC);
             </div>
             <div class="btns-chatper-page">
                 <?php if ($previousChapter): ?>
-                    <a href="chapter-page.php?title=<?php echo $previousChapter['chapter_title']; ?>" class="prev-btn">Prev</a>
+                    <a href="/chapter/<?php echo $previousChapter['chapter_title']; ?>" class="prev-btn">Prev</a>
                 <?php endif; ?>
                 <?php if ($nextChapter): ?>
-                    <a href="chapter-page.php?title=<?php echo $nextChapter['chapter_title']; ?>" class="next-btn">Next</a>
+                    <a href="/chapter/<?php echo $nextChapter['chapter_title']; ?>" class="next-btn">Next</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -99,6 +137,8 @@ $tags_result = $stmt_tags->fetch(PDO::FETCH_ASSOC);
                 ?>
             </div>
         </div>
+        <div class="">
+
         <div class="section section-select">
             <div class="custom-select ">
                 <select id="chapterSelect2">
@@ -107,27 +147,71 @@ $tags_result = $stmt_tags->fetch(PDO::FETCH_ASSOC);
             </div>
             <div class="btns-chatper-page">
                 <?php if ($previousChapter): ?>
-                    <a href="chapter-page.php?title=<?php echo $previousChapter['chapter_title']; ?>" class="prev-btn">Prev</a>
+                    <a href="/chapter/<?php echo $previousChapter['chapter_title']; ?>" class="prev-btn">Prev</a>
                 <?php endif; ?>
                 <?php if ($nextChapter): ?>
-                    <a href="chapter-page.php?title=<?php echo $nextChapter['chapter_title']; ?>" class="next-btn">Next</a>
+                    <a href="/chapter/<?php echo $nextChapter['chapter_title']; ?>" class="next-btn">Next</a>
                 <?php endif; ?>
             </div>
         </div>
     </div>
+    </div>
+
     <?php include "footer.php"?>
     <script>
         document.getElementById('chapterSelect').addEventListener('change', function() {
             var selectedChapter = this.value;
-            var url = 'chapter-page.php?title=' + selectedChapter;
+            var url = '/chapter/' + selectedChapter;
             window.location.href = url;
         });
 
         document.getElementById('chapterSelect2').addEventListener('change', function() {
             var selectedChapter = this.value;
-            var url = 'chapter-page.php?title=' + selectedChapter;
+            var url = '/chapter/' + selectedChapter;
             window.location.href = url;
         });
+
+
+
+
+
+        $(document).ready(function(){
+     function updateButtonUI(button, isBookmarked) {
+        if (isBookmarked) {
+            button.html('<i class="fa-solid fa-check"></i><p>Bookmarked</p>');
+        } else {
+            button.html('<i class="fa-solid fa-bookmark"></i><p>Bookmark</p>');
+        }
+    }
+
+     $('.novel-container').on('click', '.bookmarks-btn-normal, .bookmarks-btn-phone', function(){
+        var button = $(this);
+        var bookId = button.data('id');
+         var isLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+
+         if (!isLoggedIn) {
+            var modalLogin = document.querySelector('.modal-login');
+            modalLogin.style.display = 'flex';
+        } else {
+             $.ajax({
+                type: "POST",
+                url: "/php/bookmarks-save",
+                data: { book_id: bookId },
+                success: function(response){
+                    console.log("Data sent successfully");
+                    console.log("Response from server:", response); 
+                    var isBookmarked = response.trim() === 'added'; 
+                    updateButtonUI(button, isBookmarked); 
+                     var otherButton = button.hasClass('bookmarks-btn-normal') ? $(".bookmarks-btn-phone") : $(".bookmarks-btn-normal");
+                    updateButtonUI(otherButton, isBookmarked);
+                },
+                error: function(){
+                    console.error("Error sending data");
+                }
+            });
+        }});
+});
+ 
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/includes/nav.css">
+    <link rel="stylesheet" href="/assets/css/includes/nav.css">
 
     <title>Document</title>
 </head>
@@ -15,7 +15,7 @@
             <h2>Signup for JadeNovels</h2>
             <?php if(isset($_SESSION['Signup'])) {echo'<div class="success">'.  $_SESSION['Signup'] . '</div>' ; unset($_SESSION['Signup']);} ?>
             <?php if(isset($_SESSION['Signup_err'])) {echo'<div class="err">'.  $_SESSION['Signup_err'] . '</div>' ; unset($_SESSION['Signup_err']);} ?>
-            <form id="signup-form" action="includes/signup.php" method="post">
+            <form id="signup-form" action="/includes/signup" method="post">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" name="username" id="username" required>
@@ -26,12 +26,12 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password"  name="password" id="password" required>
+                    <input type="password"  name="passwordSignup" id="password" required>
                 </div>
                 <button type="submit" class="btn">Sign Up</button>
             </form>
             <div class="options">
-                <p>Already have an account? <a href="#">Log in</a></p>
+                <p>Already have an account? <a class="open-login">Log in</a></p>
                 <p>Lost your password? <a href="#">Reset Password</a></p>
             </div>
         </div>
@@ -42,7 +42,7 @@
             <span class="close-login">&times;</span>
             <h2>Sign In to Jade Novels</h2>
             <?php if(isset($_SESSION['login_err'])) {echo'<div class="err">'.  $_SESSION['login_err'] . '</div>' ; unset($_SESSION['login_err']);} ?>
-            <form id="login-form" action="includes/signin.php" method="post">
+            <form id="login-form" action="/includes/signin" method="post">
                 <div class="form-group">
                     <label for="username_email">Username or Email Address</label>
                     <input type="text" name="username" id="username_email" required>
@@ -67,28 +67,28 @@
           </div>
 <div class="custom-navigation-bar">
       <div class="custom-navigation-bar-container">
-        <img src="assets/pictures/5.png " alt="" class="logo" id="logo">
+        <img src="/assets/pictures/5.png " alt="" class="logo" id="logo">
         <div class="custom-nav-links">
           <ul>
             <li>
-              <a href="user-page-bookmarks.php">User Settings</a>
+              <a href="/user-page-bookmarks">User Settings</a>
             </li>
             <li>
-              <a href="advanced.php">ALL NOVEL</a>
+              <a href="/advanced">ALL NOVEL</a>
             </li>
             <li>
-              <a href="advanced.php?status=COMPLETED">COMPLETED</a>
+              <a href="/advanced?status=COMPLETED">COMPLETED</a>
             </li>
             <li>
-              <a href="advanced.php?tags=CHINESE+NOVEL">CHINESE NOVEL</a>
+              <a href="/advanced?tags=CHINESE+NOVEL">CHINESE NOVEL</a>
             </li>
           </ul>
           <ul>
             <li>
-              <a href="advanced.php?tags=KOREAN+NOVEL">KOREAN NOVEL</a>
+              <a href="/advanced?tags=KOREAN+NOVEL">KOREAN NOVEL</a>
             </li>
             <li>
-              <a href="advanced.php?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a>
+              <a href="/advanced?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a>
             </li>
             
           </ul>
@@ -98,29 +98,29 @@
         <a class="custom-search-button-nav">
           <i class="fas fa-search"></i>
         </a>
-        <a class="custom-advanced-button-nav" href="advanced.php"> Advanced </a>
-        <img src="assets/icons/bars.png" alt="" class="fa-bars" id="toggleButton">
+        <a class="custom-advanced-button-nav" href="/advanced"> Advanced </a>
+        <img src="/assets/icons/bars.png" alt="" class="fa-bars" id="toggleButton">
       </div>
     </div>
     <div class="custom-secondary-navbar">
       <ul class="custom-secondary-navbar-ul">
         <li>
-          <a href="/advanced.php?genres%5B%5D=Action">ACTION</a>
+          <a href="/advanced?genres%5B%5D=Action">ACTION</a>
         </li>
         <li>
-          <a href="/advanced.php?genres%5B%5D=Adventure">ADVENTURE</a>
+          <a href="/advanced?genres%5B%5D=Adventure">ADVENTURE</a>
         </li>
         <li>
-          <a href="/advanced.php?genres%5B%5D=Fantasy">FANTASY</a>
+          <a href="/advanced?genres%5B%5D=Fantasy">FANTASY</a>
         </li>
         <li>
-          <a href="/advanced.php?genres%5B%5D=Romance">ROMANCE</a>
+          <a href="/advanced?genres%5B%5D=Romance">ROMANCE</a>
         </li>
         <li>
-          <a href="/advanced.php?genres%5B%5D=Harem">HAREM</a>
+          <a href="/advanced?genres%5B%5D=Harem">HAREM</a>
         </li>
         <li>
-          <a href="/advanced.php?genres%5B%5D=Martial+Arts">MARTIAL ARTS</a>
+          <a href="/advanced?genres%5B%5D=Martial+Arts">MARTIAL ARTS</a>
         </li>
         <li>
           <a  class="MORE" href="#" onmouseover="toggleDropdown(true)" onmouseout="toggleDropdown(false)">MORE <i class="fa-solid fa-caret-left fa-flip-horizontal"></i></a>
@@ -128,13 +128,13 @@
       </ul>
       <ul class="custom-secondary-navbar-ul phone">
         <li>
-          <a href="/advanced.php?genres%5B%5D=Action">ACTION</a>
+          <a href="/advanced?genres%5B%5D=Action">ACTION</a>
         </li>
         <li>
-          <a href="/advanced.php?genres%5B%5D=Adventure">ADVENTURE</a>
+          <a href="/advanced?genres%5B%5D=Adventure">ADVENTURE</a>
         </li>
         <li>
-          <a href="/advanced.php?genres%5B%5D=Fantasy">FANTASY</a>
+          <a href="/advanced?genres%5B%5D=Fantasy">FANTASY</a>
         </li>
         
       </ul>
@@ -142,68 +142,68 @@
       <ul class="nav-list-dropdown">
      <ul>
      <li>
-            <a href="/advanced.phptags=KOREAN+NOVEL">KOREAN NOVEL</a>
+            <a href="/advanced?tags=KOREAN+NOVEL">KOREAN NOVEL</a>
           </li>
           <li>
-            <a href="/advanced.php?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a>
+            <a href="/advanced?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Ecchi">ECCHI</a>
+            <a href="/advanced?genres%5B%5D=Ecchi">ECCHI</a>
           </li>
      </ul>
           <ul>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Shounen">SHOUNEN</a>
+            <a href="/advanced?genres%5B%5D=Shounen">SHOUNEN</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Comedy">COMEDY</a>
+            <a href="/advanced?genres%5B%5D=Comedy">COMEDY</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=School+Life">SCHOOL LIFE</a>
-          </li>
-          </ul>
-          <ul>
-          <li>
-            <a href="/advanced.php?genres%5B%5D=Drama">DRAMA</a>
-          </li>
-          <li>
-            <a href="/advanced.php?genres%5B%5D=Horror">HORROR</a>
-          </li>
-          <li>
-            <a href="/advanced.php?genres%5B%5D=Shoujo">SHOUJO</a>
+            <a href="/advanced?genres%5B%5D=School+Life">SCHOOL LIFE</a>
           </li>
           </ul>
           <ul>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Josei">JOSEI</a>
+            <a href="/advanced?genres%5B%5D=Drama">DRAMA</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Mature">MATURE</a>
+            <a href="/advanced?genres%5B%5D=Horror">HORROR</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Mystery">MYSTERY</a>
-          </li>
-          </ul>
-          <ul>
-          <li>
-            <a href="/advanced.php?genres%5B%5D=Psychological">PSYCHOLOGICAL</a>
-          </li>
-          <li>
-            <a href="/advanced.php?genres%5B%5D=Sci-fi">SCI-FI</a>
-          </li>
-          <li>
-            <a href="/advanced.php?genres%5B%5D=Seinen">SEINEN</a>
+            <a href="/advanced?genres%5B%5D=Shoujo">SHOUJO</a>
           </li>
           </ul>
           <ul>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Slice+of+Life">SLICE OF LIFE</a>
+            <a href="/advanced?genres%5B%5D=Josei">JOSEI</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Tragedy">TRAGEDY</a>
+            <a href="/advanced?genres%5B%5D=Mature">MATURE</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Supernatural">SUPERNATURAL</a>
+            <a href="/advanced?genres%5B%5D=Mystery">MYSTERY</a>
+          </li>
+          </ul>
+          <ul>
+          <li>
+            <a href="/advanced?genres%5B%5D=Psychological">PSYCHOLOGICAL</a>
+          </li>
+          <li>
+            <a href="/advanced?genres%5B%5D=Sci-fi">SCI-FI</a>
+          </li>
+          <li>
+            <a href="/advanced?genres%5B%5D=Seinen">SEINEN</a>
+          </li>
+          </ul>
+          <ul>
+          <li>
+            <a href="/advanced?genres%5B%5D=Slice+of+Life">SLICE OF LIFE</a>
+          </li>
+          <li>
+            <a href="/advanced?genres%5B%5D=Tragedy">TRAGEDY</a>
+          </li>
+          <li>
+            <a href="/advanced?genres%5B%5D=Supernatural">SUPERNATURAL</a>
           </li>
           </ul>
       </ul>
@@ -214,11 +214,11 @@
       <div class="user-loggedin-container" <?php  if(isset($_SESSION['user_id'])){echo"style='display:flex'";}  else{echo"style='display:none'";} ?>>
   <?php 
     echo '<p class="loggedin-name">'.$_SESSION["username"].' </p>' ; 
-    echo '<img src='.$_SESSION["profileimg"].' class="profile-loggedin-pic" onmouseover="showList()" onmouseout="hideList()">'; 
+    echo '<img  class="profile-loggedin-pic" src="'.$_SESSION["profileimg"].'" onmouseover="showList()" onmouseout="hideList()">'; 
   ?>
   <div id="hover-list" style="display: none;">
-    <a href="account.php"> User Settings</a>
-    <a href="logOut.php">Log out</a>
+    <a href="/account"> User Settings</a>
+    <a href="/logOut">Log out</a>
  
   </div>
 </div>
@@ -226,41 +226,41 @@
     <ul class="dropdown" id="myDropdown" >
     <ul>
     <li>
-            <a href="advanced.php?tags=KOREAN+NOVEL">KOREAN NOVEL</a>
+            <a href="/advanced?tags=KOREAN+NOVEL">KOREAN NOVEL</a>
           </li>
           <li>
-            <a href="advanced.php?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a>
+            <a href="/advanced?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Ecchi">ECCHI</a>
+            <a href="/advanced?genres%5B%5D=Ecchi">ECCHI</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Shounen">SHOUNEN</a>
+            <a href="/advanced?genres%5B%5D=Shounen">SHOUNEN</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Comedy">COMEDY</a>
+            <a href="/advanced?genres%5B%5D=Comedy">COMEDY</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=School+Life">SCHOOL LIFE</a>
+            <a href="/advanced?genres%5B%5D=School+Life">SCHOOL LIFE</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Drama">DRAMA</a>
+            <a href="/advanced?genres%5B%5D=Drama">DRAMA</a>
           </li>
           <ul>
       <li>
-            <a href="/advanced.php?genres%5B%5D=Horror">HORROR</a>
+            <a href="/advanced?genres%5B%5D=Horror">HORROR</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Shoujo">SHOUJO</a>
+            <a href="/advanced?genres%5B%5D=Shoujo">SHOUJO</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Josei">JOSEI</a>
+            <a href="/advanced?genres%5B%5D=Josei">JOSEI</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Mature">MATURE</a>
+            <a href="/advanced?genres%5B%5D=Mature">MATURE</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Mystery">MYSTERY</a>
+            <a href="/advanced?genres%5B%5D=Mystery">MYSTERY</a>
           </li>
       </ul>
     </ul>
@@ -269,27 +269,27 @@
 
    <ul>
    <li>
-            <a href="/advanced.php?genres%5B%5D=Psychological">PSYCHOLOGICAL</a>
+            <a href="/advanced?genres%5B%5D=Psychological">PSYCHOLOGICAL</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Sci-fi">SCI-FI</a>
+            <a href="/advanced?genres%5B%5D=Sci-fi">SCI-FI</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Seinen">SEINEN</a>
+            <a href="/advanced?genres%5B%5D=Seinen">SEINEN</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Slice+of+Life">SLICE OF LIFE</a>
+            <a href="/advanced?genres%5B%5D=Slice+of+Life">SLICE OF LIFE</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Tragedy">TRAGEDY</a>
+            <a href="/advanced?genres%5B%5D=Tragedy">TRAGEDY</a>
           </li>
           <li>
-            <a href="/advanced.php?genres%5B%5D=Supernatural">SUPERNATURAL</a>
+            <a href="/advanced?genres%5B%5D=Supernatural">SUPERNATURAL</a>
           </li>
    </ul>
         </ul>
         <div class="navbar-phone">
-        <img src="assets/pictures/x.svg" alt="" class="x-btn">
+        <img src="/assets/pictures/x.svg" alt="" class="x-btn">
               <div class="navbar-phone-btns-container" <?php if(isset($_SESSION['user_id'])){echo"style='display:none;'";} ?>>
 
 
@@ -311,14 +311,16 @@
   </div>
 
 <ul class="phoneli">
-    <li><a class="" href="user-page-bookmarks.php">User Settings</a></li>
-    <li><a class=" " href="advanced.php">ALL NOVEL</a></li>
-    <li><a class=" " href="advanced.php?status=Completed">COMPLETED</a></li>
-    <li><a class=" " href="advanced.php?tags=CHINESE+NOVEL">CHINESE NOVEL</a></li>
-    <li><a class=" " href="advanced.php?tags=KOREAN+NOVEL">KOREAN NOVEL</a></li>
-    <li><a class=" " href="advanced.php?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a></li>
+   <?php if(isset($_SESSION['user_id'])) 
+      echo '<li><a class=" " href="/user-page-bookmarks">User Settings</a></li>' ;
+    ?>
+     <li><a class=" " href="/advanced">ALL NOVELS</a></li>
+    <li><a class=" " href="/advanced?status=Completed">COMPLETED</a></li>
+    <li><a class=" " href="/advanced?tags=CHINESE+NOVEL">CHINESE NOVEL</a></li>
+    <li><a class=" " href="/advanced?tags=KOREAN+NOVEL">KOREAN NOVEL</a></li>
+    <li><a class=" " href="/advanced.?tags=JAPANESE+NOVEL">JAPANESE NOVEL</a></li>
     <?php if(isset($_SESSION['user_id'])) 
-      echo '<li><a class=" " href="logOut.php">LOGOUT</a></li>' ;
+      echo '<li><a class=" " href="logOut">LOGOUT</a></li>' ;
     ?>
 
 </ul>
@@ -425,7 +427,9 @@
 
     });
   });
-
+  <?php  if(isset($_SESSION['user_id'])) { echo
+  
+  '
   document.addEventListener("DOMContentLoaded", function() {
     const profilePic = document.querySelector(".profile-loggedin-pic");
     const hoverList = document.getElementById("hover-list");
@@ -438,7 +442,11 @@
       hoverList.style.display = "none";
     });
   });
+  ';
 
+  
+} 
+?>
   document.addEventListener('DOMContentLoaded', function () {
     var dropdownButtonPhone = document.querySelector('.phone-nav-list-btn');
     var dropdownListPhone = document.querySelector('.nav-list-dropdown');
@@ -461,13 +469,13 @@ const logo = document.getElementById('logo');
 
 // Add a click event listener to the logo element
 logo.addEventListener('click', function() {
-  // Redirect to index.php
-  window.location.href = 'index.php';
+  // Redirect to index
+  window.location.href = '/home';
 });
 
 document.addEventListener('DOMContentLoaded', function () {
     // Select the user settings button
-    var userSettingsButton = document.querySelector('a[href="user-page-bookmarks.php"]');
+    var userSettingsButton = document.querySelector('a[href="/user-page-bookmarks"]');
 
     // Add event listener to the user settings button
     userSettingsButton.addEventListener('click', function (event) {

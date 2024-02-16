@@ -388,12 +388,12 @@ white-space: wrap !important;
     -o-transition: all .3s ease;
     transition: all .3s ease;
      border-bottom: 1px solid rgba(250,247,250,.3);
-     font-size:17px;
-     padding: 10px;
+     font-size:19px;
+     padding: 20px;
  }
  .phoneli li{
-      margin-bottom:30px;
-      margin-top:30px;
+      margin-bottom:40px;
+      margin-top:40px;
 
 }
 .phoneli{

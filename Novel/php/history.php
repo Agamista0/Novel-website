@@ -55,11 +55,11 @@ foreach ($history_entries as $entry) {
          <div class="novel-card">
             <img src="' . $entry['img'] . '" alt="" srcset="">
             <div class="info">
-                <p class="title-history"> <a href="book.php?book_id=' . $entry['bookID'] . '">
+                <p class="title-history"> <a href="/Novel/' . $entry['bookID'] . '">
                     ' .$entry['book_title']. '
                 </a></p>
                 <div class="chapters">
-                    <a href="chapter-page.php?title=' . $entry['chapter_title'] . '" class="chapter-number">
+                    <a href="chapter-page?title=' . $entry['chapter_title'] . '" class="chapter-number">
                     '.$chapter_title.'
                     </a>
                     <p class="time">
