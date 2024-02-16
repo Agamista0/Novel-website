@@ -34,6 +34,8 @@ if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
         <div class="novels">
           <?php include './php/home.php' ;?>
         </div>
+        <?php include "older-index.php"?>
+
       </div>
       <div class="right-side">
         <div class="history">

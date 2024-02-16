@@ -40,7 +40,6 @@
     grid-template-columns: repeat(2, 1fr);
     width:100%;
     justify-content: space-between;
-    border-bottom: 1px solid #ebebeb;
 }
 
 .novel-card-index{

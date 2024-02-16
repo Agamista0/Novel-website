@@ -265,7 +265,7 @@ include 'php/advanced.php';
             echo '<div class="chapter-info">';
             echo '<div class="chapter-info-subdiv">';
             echo '<p class="lattest"> Latest chapter </p>';
-            echo '<a  class="chapter-number" href="chapter-page?title='.$last_chapter['chapter_title'].'">'.$lastChTitle.' </a>';
+            echo '<a  class="chapter-number" href="/chapter/'.$last_chapter['chapter_title'].'">'.$lastChTitle.' </a>';
             echo '<p class="time">'.$last_chapter['time_created'].'</p>';
             echo '</div>';
             echo '<div class="rating normal">';

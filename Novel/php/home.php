@@ -91,11 +91,11 @@ foreach ($result as $row) {
 
   echo '
   <div class="chapter-container">
-  <a  href="chapter-page?title='.$row['last_chapter_title'].'" class="chapter">'.$last_chapter_title.'</a>
+  <a  href="/chapter/'.$row['last_chapter_title'].'" class="chapter">'.$last_chapter_title.'</a>
   <p class="time">'.$last_chapter_time.'</p>
   </div> 
   <div class="chapter-container">
-  <a href="chapter-page?title='.$row['penultimate_chapter_title'].'" class="chapter"> '.$penultimate_chapter_title.'</a>
+  <a href="/chapter/'.$row['penultimate_chapter_title'].'" class="chapter"> '.$penultimate_chapter_title.'</a>
   <p class="time"> '.$time_display.'</p>
 </div>' ;
 } ?>

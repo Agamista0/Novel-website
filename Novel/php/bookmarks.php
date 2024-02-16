@@ -40,7 +40,7 @@ foreach ($bookmarks as $bookmark):
             </a>
             <div class="chapters">
                 <div class="chapter-bookmarks">
-                    <a href="chapter-page?title=<?php echo $bookmark['last_chapter_title'] ?>" class="chapter-button">
+                    <a href="/chapter/<?php echo $bookmark['last_chapter_title'] ?>" class="chapter-button">
                         <?php echo truncateChapterTitle($bookmark['last_chapter_title']); ?>
                     </a>
                     <p class="time">
@@ -48,7 +48,7 @@ foreach ($bookmarks as $bookmark):
                     </p>
                 </div>
                 <div class="chapter-bookmarks">
-                    <a href="chapter-page?title=<?php echo $bookmark['penultimate_chapter_title'] ?>" class="chapter-button">
+                    <a href="/chapter/<?php echo $bookmark['penultimate_chapter_title'] ?>" class="chapter-button">
                         <?php echo truncateChapterTitle($bookmark['penultimate_chapter_title']); ?>
                     </a>
                     <p class="time">

@@ -245,7 +245,7 @@ $genreList = explode(',', $book['genres']);
 
 </div>
 <?php include "footer.php"?>
-<script src="scripts/sort.js"></script>
+<script src="/scripts/sort.js"></script>
 <script>
        const novelCardsbook = document.querySelectorAll('.chapter-row');
 

@@ -59,7 +59,7 @@ foreach ($history_entries as $entry) {
                     ' .$entry['book_title']. '
                 </a></p>
                 <div class="chapters">
-                    <a href="chapter-page?title=' . $entry['chapter_title'] . '" class="chapter-number">
+                    <a href="/chapter/'. $entry['chapter_title'] . '" class="chapter-number">
                     '.$chapter_title.'
                     </a>
                     <p class="time">

@@ -1,0 +1,27 @@
+.older-posts-div{
+ 
+    display: flex;
+    align-items: center;
+   font-size: 17px;
+   margin-top: 20px;
+ }
+
+ .older-posts-div a{
+    color: #333;
+    transition: 0.3s;
+
+
+ }
+ .older-posts-div a:hover{
+   color: #333;
+   color: #52aa6d;
+}
+ @media (max-width: 500px) {
+    
+}
+.older-posts-container{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   width:100%;
+}
