@@ -10,7 +10,7 @@ import time
 # MySQL database connection
 
 db_connection = mysql.connector.connect(
-    host="127.0.0.1",
+    host="DB",
     user="root",
     password="root",
     database="bookstore"
@@ -183,8 +183,12 @@ def scrape_boxnovel():
 
 
 # Call the main scraping function
-scrape_boxnovel()
+    
+while True :
 
-# Close database connection
-cursor.close()
-db_connection.close()
+    scrape_boxnovel()
+    cursor.close()
+    db_connection.close()
+
+    time.sleep(86400)
+

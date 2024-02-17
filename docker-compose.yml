@@ -43,5 +43,19 @@ services:
       depends_on:
         - DB
         
+     
+    python-script:
+        build: ./web_scriping
+        volumes:
+          - ./web_scriping:/app
+        depends_on:
+          - DB
+        environment:
+          - MYSQL_HOST=db
+          - MYSQL_USER=root
+          - MYSQL_PASSWORD=root
+          - MYSQL_DB=bookstore
+
+            
 volumes:
   DB_data:
