@@ -37,6 +37,7 @@ include "navbar.php";
             <p> LATEST NOVEL UPDATES</p>
         </div>
         <div class="novels">
+            
             <?php
             foreach ($result as $row) {
                 ?>
@@ -44,7 +45,8 @@ include "navbar.php";
                     <!-- Novel Card Content -->
                     <div class="novel-img" data-id="<?php echo $row['id']; ?>">
                         <div class="colorhoverimg"></div>
-                        <img src="<?php echo $row['img']; ?>" href="/Novel/<?php echo $row['id']; ?>"
+                        <!-- Add a placeholder image and data-src attribute -->
+                        <img src="placeholder.jpg" data-src="<?php echo $row['img']; ?>" href="/Novel/<?php echo $row['id']; ?>"
                              alt="<?php echo $row['title']; ?>">
                     </div>
                     <div class="novel-info">
@@ -111,11 +113,11 @@ include "navbar.php";
                             // Output the formatted time
                             echo '
                             <div class="chapter-container">
-                                <a  href="/chapter/' . $row['last_chapter_title'] . '" class="chapter">' . $last_chapter_title . '</a>
+                                <a  href="/Novel/'.$row['id'].'/' . $row['last_chapter_title'] . '" class="chapter">' . $last_chapter_title . '</a>
                                 <p class="time">' . $last_chapter_time . '</p>
                             </div> 
                             <div class="chapter-container">
-                                <a href="/chapter/' . $row['penultimate_chapter_title'] . '" class="chapter">' . $penultimate_chapter_title . '</a>
+                                <a href="/Novel/'.$row['id'].'/' . $row['penultimate_chapter_title'] . '" class="chapter">' . $penultimate_chapter_title . '</a>
                                 <p class="time">' . $time_display . '</p>
                             </div>';
                         }
@@ -143,25 +145,25 @@ include "navbar.php";
 <?php include "footer.php"; ?>
 
 <script>
-    const successMessage = document.querySelector('.success');
-    // If the success message div exists, show it and then hide it after 5 seconds
-    if (successMessage) {
-        successMessage.style.display = 'block';
-        setTimeout(function () {
-            successMessage.style.display = 'none';
-        }, 3000); // 5000 milliseconds = 5 seconds
+    // Function to lazy load images
+    function lazyLoadImages() {
+        const images = document.querySelectorAll('img[data-src]');
+        
+        images.forEach(img => {
+            if (img.getBoundingClientRect().top < window.innerHeight) {
+                // Load the image
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            }
+        });
     }
 
-    // Get the error message div
-    const errorMessage = document.querySelector('.err');
+    // Call the lazyLoadImages function when the page is scrolled or resized
+    window.addEventListener('scroll', lazyLoadImages);
+    window.addEventListener('resize', lazyLoadImages);
 
-    // If the error message div exists, show it and then hide it after 5 seconds
-    if (errorMessage) {
-        errorMessage.style.display = 'block';
-        setTimeout(function () {
-            errorMessage.style.display = 'none';
-        }, 3000); // 5000 milliseconds = 5 seconds
-    }
+    // Initial call to lazyLoadImages to load images when the page is loaded
+    lazyLoadImages();
 </script>
 
 </body>

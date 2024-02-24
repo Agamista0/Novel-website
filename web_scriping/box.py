@@ -7,10 +7,13 @@ import smtplib
 from email.mime.text import MIMEText
 import traceback
 import time 
-# MySQL database connection
+import logging
 
+logging.basicConfig(filename='scraping.log', level=logging.ERROR)
+
+# MySQL database connection
 db_connection = mysql.connector.connect(
-    host="DB",
+    host="localhost",
     user="root",
     password="root",
     database="bookstore"
@@ -72,28 +75,47 @@ def Select_bookID(title):
 
 # Extract book information
 def get_page_info(soup):
-    try:
-        for book_div in soup.find_all("div", class_="row c-tabs-item__content"):
-            title = book_div.find("h3", class_="h4").text.strip()
+    
+    for book_div in soup.find_all("div", class_="row c-tabs-item__content"):
+        try:   
+            title__element = book_div.find("h3", class_="h4")
+            title= title__element.text.strip() if title__element else "Null"
+
             base_url = book_div.find("a")["href"]
-            picture = book_div.find("img")["data-src"]
+
+            picture__element = book_div.find("img")["data-src"]
+            picture = picture__element if picture__element else "Null"
+
             author_element = book_div.find("div", class_="summary-content")
-            author = author_element.text.strip() if author_element else None
+            author = author_element.text.strip() if author_element else "Null"
+
             genres_element = book_div.find('div', class_='mg_genres').find('div', class_='summary-content')
-            genres = genres_element.text.strip() if genres_element else None
+            genres = genres_element.text.strip() if genres_element else "Null"
+
             status_element = book_div.find('div', class_='mg_status').find('div', class_='summary-content')
-            status = status_element.text.strip() if status_element else None
-            rating = book_div.find("span", class_="score font-meta total_votes").text.strip()
-            release_date = book_div.find("div", class_="meta-item post-on").text.strip()
-            
+            status = status_element.text.strip() if status_element else "Null"
+
+            rating_element = book_div.find("span", class_="score font-meta total_votes")
+            rating = rating_element.text.strip() if rating_element else "Null"
+
+            release_date_element = book_div.find("div", class_="meta-item post-on")
+            release_date = release_date_element.text.strip() if release_date_element else "Null"
+
             response = requests.get(base_url)
             tags_soup = BeautifulSoup(response.content, "html.parser")  
-            tags = tags_soup.find("div", class_="tags-content").text.strip()
-            Synopsis= tags_soup.find("div", class_="g_txt_over").prettify()
+
+            tags_element = tags_soup.find("div", class_="tags-content")
+            tags= tags_element.text.strip() if tags_element else "Null"
+
+            Synopsis_element = tags_soup.find("div", class_="g_txt_over")
+            Synopsis = Synopsis_element.prettify() if Synopsis_element else "Null"
+
 
             if not book_exists(title):
                 # Insert book information into the database
                 insert_book_info(title, picture, author, genres, status, release_date ,rating ,tags ,Synopsis)
+                logging.info(f'The execution ({title}) book has been inserted successfully!')
+
             else :
                 update_query = "UPDATE books SET tags = %s , status = %s , release_date= %s WHERE title = %s"
                 update_data = (tags,status,release_date, title)
@@ -127,40 +149,39 @@ def get_page_info(soup):
                     soup = BeautifulSoup(response.content, "html.parser")
 
                     # Extract chapter information
-                    chapter_name = soup.find("li", class_="active").text.strip()
-                    
-                    chapter_text = soup.find("div", class_="text-left").prettify()
+                    chapter_name_element = soup.find("li", class_="active")
+                    chapter_name = chapter_name_element.text.strip() if chapter_name_element else "Null"
+                    chapter_text_element = soup.find("div", class_="text-left")
+                    chapter_text = chapter_text_element.prettify()  if chapter_text_element else "Null"
 
-                    if book_id:
+                    if book_id and chapter_name != "Null":
                         print(f'book id : {book_id}')
                         # Insert chapter information into the database
                         insert_chapter_info(book_id, chapter_name, chapter_text)
                         time.sleep(1)
 
                 except requests.exceptions.RequestException as err:
-                    print(f"Error: {err}")
-                    continue  
+                    logging.error(f"Error: {err}")
+                    continue
+        
 
-    except Exception as e:
-        print(f"Error in processing book_div: {e}")
-        error_message = f"An error occurred in get_page_info function: {e}\n\n"
-        send_email_notification("Error in scraping script", error_message)
+        except Exception as e:
+            logging.error(f"Error in processing book_div: {e}")
 
 
           
 
 # Main scraping function
 def scrape_boxnovel():
-    try:
+
         base_url = "https://boxnovel.com/?s&post_type=wp-manga"
         response = requests.get(base_url)
         soup = BeautifulSoup(response.content, "html.parser")  
         print(base_url)
             
-        try:
-            get_page_info(soup)
-        except Exception as e:
-            print(f"An error occurred while processing the page: {e}")
+      
+        get_page_info(soup)
+       
 
         no_OF_page = soup.find("h1", class_="h4").text.strip()
         no_OF_page = re.search(r'\d+', no_OF_page)
@@ -175,12 +196,7 @@ def scrape_boxnovel():
                 get_page_info(soup)
         
  
-        print(" i'm finished this script , bye ^_^ ")
-    except Exception as e:
-        error_message = f"An error occurred in scrape_boxnovel function: {e}\n\n{traceback.format_exc()}"
-        send_email_notification("Error in scraping script", error_message)
-  
-
+        logging.info("Script execution completed successfully!")
 
 # Call the main scraping function
     
@@ -191,4 +207,3 @@ while True :
     db_connection.close()
 
     time.sleep(86400)
-

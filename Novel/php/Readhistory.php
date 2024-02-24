@@ -10,7 +10,6 @@ if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark") {
 
 if (isset($_SESSION['user_id'])) {
     $userID = $_SESSION['user_id'];
-
     // Query to fetch data from the history table without duplicate books
     $query = "SELECT b.id AS bookID, b.title AS book_title, MAX(h.accessed_at) AS accessed_at
     FROM history h
@@ -37,7 +36,7 @@ if (isset($_SESSION['user_id'])) {
     foreach ($history_entries as $entry) {
         echo '<div class="info">
                 <p class="title-history">
-                    <a class="history-title" href="book?book_id=' . $entry['bookID'] . '">
+                    <a class="history-title" href="/Novel/'.$entry['bookID']. '">
                         ' . $entry['book_title'] . '
                     </a>
                 </p>

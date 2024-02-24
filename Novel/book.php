@@ -13,24 +13,28 @@ if (isset($_SESSION['user_id'])) {
 $bookId = $_GET['book_id'];
 
 include "php/db.php" ;
-
 $query_book = "SELECT * FROM (SELECT * ,ROW_NUMBER() OVER (ORDER BY views DESC) AS book_rank FROM books)AS ranked_books WHERE id =:book_id";
-$stmt_book = $pdo->prepare($query_book);
-$stmt_book->bindParam(':book_id', $_GET['book_id']);
-$stmt_book->execute();
-$book = $stmt_book->fetch(PDO::FETCH_ASSOC);
-
-
 $query_chapters = "SELECT * FROM chapters WHERE book_id = :book_id ORDER BY time_created DESC";
-$stmt_chapters = $pdo->prepare($query_chapters);
-$stmt_chapters->bindParam(':book_id', $_GET['book_id']);
-$stmt_chapters->execute();
-$chapters = $stmt_chapters->fetchAll(PDO::FETCH_ASSOC);
-
 $query_count_chapters = "SELECT COUNT(*) AS num_chapters FROM chapters WHERE book_id = :book_id";
+
+// Prepare statements
+$stmt_book = $pdo->prepare($query_book);
+$stmt_chapters = $pdo->prepare($query_chapters);
 $stmt_count_chapters = $pdo->prepare($query_count_chapters);
-$stmt_count_chapters->bindParam(':book_id', $_GET['book_id']);
+
+// Bind parameters
+$stmt_book->bindParam(':book_id', $bookId);
+$stmt_chapters->bindParam(':book_id', $bookId);
+$stmt_count_chapters->bindParam(':book_id', $bookId);
+
+// Execute queries
+$stmt_book->execute();
+$stmt_chapters->execute();
 $stmt_count_chapters->execute();
+
+// Fetch results
+$book = $stmt_book->fetch(PDO::FETCH_ASSOC);
+$chapters = $stmt_chapters->fetchAll(PDO::FETCH_ASSOC);
 $count_result = $stmt_count_chapters->fetch(PDO::FETCH_ASSOC);
 $num_chapters = $count_result['num_chapters'];
 
@@ -251,8 +255,9 @@ $genreList = explode(',', $book['genres']);
 
        novelCardsbook.forEach(card => {
         card.addEventListener('click', () => {
+                const BookIdForChapter = <?php echo $bookId ?>;
                 const title = card.getAttribute('data-title');
-                const url = `/chapter/${title}`;
+                const url = `/Novel/${BookIdForChapter}/${title}`;
                 window.location.href = url;
         });
         });
@@ -360,11 +365,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Function to handle "Read First" button click
+    
     document.querySelector('#readLastBtn').addEventListener('click', function() {
+        const BookIdForChapter = <?php echo $bookId ?>;
         const firstChapter = document.querySelector('.chapter-row');
         if (firstChapter) {
             const chapterTitle = firstChapter.getAttribute('data-title');
-            window.location.href = `/chapter/${chapterTitle}`;
+            window.location.href = `/Novel/${BookIdForChapter}/${chapterTitle}`;
         } else {
             alert('No chapters available.');
         }
@@ -373,10 +380,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to handle "Read Last" button click
     document.querySelector('#readFirstBtn').addEventListener('click', function() {
         const chapters = document.querySelectorAll('.chapter-row');
+        const BookIdForChapter = <?php echo $bookId ?>;
+
         if (chapters.length > 0) {
             const lastChapter = chapters[chapters.length - 1];
             const chapterTitle = lastChapter.getAttribute('data-title');
-            window.location.href = `/chapter/${chapterTitle}`;
+            window.location.href = `/Novel/${BookIdForChapter}/${chapterTitle}`;
         } else {
             alert('No chapters available.');
         }

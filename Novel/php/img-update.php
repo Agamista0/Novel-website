@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $allowedExtensions = array("jpg", "png", "gif");
 
         if (in_array($fileExtension, $allowedExtensions)) {
-            $uploadDir = '../uploads/pictures';
+            $uploadDir = '/uploads/pictures';
             $newFileName = uniqid() . '.' . $fileExtension;
             $destPath = $uploadDir . '/' . $newFileName;
 

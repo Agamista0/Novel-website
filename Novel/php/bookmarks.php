@@ -1,20 +1,21 @@
 <?php
 $userID = $_SESSION['user_id'];
+
 $query = "SELECT b.title, b.img, b.id,
-    MAX(CASE WHEN rn = 1 THEN c.chapter_title END) AS last_chapter_title,
-    MAX(CASE WHEN rn = 1 THEN c.time_created END) AS last_chapter_time,
-    MAX(CASE WHEN rn = 2 THEN c.chapter_title END) AS penultimate_chapter_title,
-    MAX(CASE WHEN rn = 2 THEN c.time_created END) AS penultimate_chapter_time,
-    bm.bookmarked_at AS bookmark_timestamp
-FROM books b
-LEFT JOIN (
-    SELECT book_id, chapter_title, time_created, ROW_NUMBER() OVER (PARTITION BY book_id ORDER BY time_created DESC) AS rn
-    FROM chapters
-) c ON b.id = c.book_id
-LEFT JOIN bookmarks bm ON b.id = bm.book_id
-WHERE bm.user_id = :user_id
-GROUP BY b.title, b.img, bm.bookmarked_at ,b.id
-ORDER BY bm.bookmarked_at DESC";
+            MAX(CASE WHEN rn = 1 THEN c.chapter_title END) AS last_chapter_title,
+            MAX(CASE WHEN rn = 1 THEN c.time_created END) AS last_chapter_time,
+            MAX(CASE WHEN rn = 2 THEN c.chapter_title END) AS penultimate_chapter_title,
+            MAX(CASE WHEN rn = 2 THEN c.time_created END) AS penultimate_chapter_time,
+            bm.bookmarked_at AS bookmark_timestamp
+        FROM books b
+        LEFT JOIN (
+            SELECT book_id, chapter_title, time_created, ROW_NUMBER() OVER (PARTITION BY book_id ORDER BY time_created DESC) AS rn
+            FROM chapters
+        ) c ON b.id = c.book_id
+        LEFT JOIN bookmarks bm ON b.id = bm.book_id
+        WHERE bm.user_id = :user_id
+        GROUP BY b.title, b.img, bm.bookmarked_at ,b.id
+        ORDER BY bm.bookmarked_at DESC";
 
 $stmt = $pdo->prepare($query);
 $stmt->bindParam(':user_id', $userID, PDO::PARAM_INT);

@@ -5,7 +5,7 @@ services:
         container_name: website 
         build: ./Novel
         volumes:
-            - ./Novel:/var/www/html
+          - ./Novel:/var/www/html
         environment:
           - MYSQL_DBHOST=db 
           - MYSQL_DAPORT=9000
@@ -13,23 +13,23 @@ services:
           - MYSQL_DAPASS=root
           - MYSQL_DANAME=
           - file_uploads=On
-        
         ports:
-            - 8000:80
+          - 8000:80
         depends_on:
-            - DB
-  
-    DB:
+          - db
+
+    db:
       image: mysql:latest
       container_name: DB
-      restart : always
+      restart: always
       environment:
-        MYSQL_ROOT_PASSWORD: root
-        MYSQL_DATABASE: test 
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: bookstore
       ports:
-        - "9000:3306"
+          - "9000:3306"
       volumes:
-        - DB_data:/var/lib/mysql
+          - ./my.cnf:/etc/mysql/my.cnf
+          - DB_data:/var/lib/mysql
 
     phpmyadmin : 
       image : phpmyadmin:latest
@@ -38,24 +38,26 @@ services:
         - 8080:80 
       environment : 
         PMA_HOST: DB
-        UPLOAD_LIMIT: 300M
-        
+        UPLOAD_LIMIT: 3000M
       depends_on:
-        - DB
-        
-     
-    python-script:
-        build: ./web_scriping
-        volumes:
-          - ./web_scriping:/app
-        depends_on:
-          - DB
-        environment:
-          - MYSQL_HOST=db
-          - MYSQL_USER=root
-          - MYSQL_PASSWORD=root
-          - MYSQL_DB=bookstore
+        - db
+      
+    redis:
+      image: redis:latest
+      ports:
+        - "6379:6379"
 
-            
+
+    # python-script:
+    #     build: ./web_scriping
+    #     volumes:
+    #       - ./web_scriping:/app
+    #     depends_on:
+    #       - db
+    #     environment:
+    #       - MYSQL_HOST=db
+    #       - MYSQL_USER=root
+    #       - MYSQL_PASSWORD=root
+    #       - MYSQL_DB=bookstore
 volumes:
   DB_data:

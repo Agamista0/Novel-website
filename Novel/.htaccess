@@ -1,5 +1,41 @@
 Options +FollowSymLinks -MultiViews
 
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+<IfModule mod_deflate.c>
+    # Compress HTML, CSS, JavaScript, Text, XML and fonts
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+</IfModule>
+
+
 DirectoryIndex home.php
 
 # ErrorDocument 404 /error_pages/404.html 
@@ -15,14 +51,13 @@ RewriteRule ^([^\.]+)$ $1.php [NC,L]
 RewriteCond %{THE_REQUEST} "^[^ ]* .*?\.php[? ].*$"
 RewriteRule .* - [L,R=404]
 
-RewriteRule ^chapter/([0-9A-Za-z\-_]+) chapter-page.php?title=$1
+# RewriteRule ^chapter/([0-9A-Za-z\-_]+) chapter-page.php?title=$1
+
+RewriteRule ^Novel/([0-9A-Za-z\-_]+)/([0-9A-Za-z\-_]+) chapter-page.php?book_id=$1&title=$2
 
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+book\.php\?book_id=([^\s&]+) [NC]
 RewriteRule ^ book/%1? [R=301,L]
 
 RewriteRule ^Novel/([0-9]+) book.php?book_id=$1 [L,QSA]
 
-
-
-# RewriteRule ^([0-9A-Za-z\-_]+)/([0-9A-Za-z\-_]+) chapter-page.php?book_title=$1&capter_title=$2 [L,QSA]
 

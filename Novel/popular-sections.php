@@ -1,4 +1,9 @@
 <?php 
+
+$redis = new Redis();
+$redis->connect('redis', 6379);
+
+
  if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
     echo'<link rel="stylesheet" href="assets/css/includes/darkmode.css">';
 }  ?>
@@ -25,25 +30,38 @@
         <div class="novels-right">
       
 <?php
-
-$query = " SELECT b.title, b.img, b.tags, b.author, b.id, b.genres, b.status, b.release_date, b.sum_ratings, b.views ,
-              MAX(CASE WHEN rn = 1 THEN c.chapter_title END) AS last_chapter_title,
-              MAX(CASE WHEN rn = 1 THEN c.time_created END) AS last_chapter_time,
-              MAX(CASE WHEN rn = 2 THEN c.chapter_title END) AS penultimate_chapter_title,
-              MAX(CASE WHEN rn = 2 THEN c.time_created END) AS penultimate_chapter_time
-              FROM books b
-              LEFT JOIN ( SELECT book_id, chapter_title, time_created, ROW_NUMBER() OVER (PARTITION BY book_id ORDER BY time_created DESC) AS rn
-              FROM chapters ) c ON b.id = c.book_id GROUP BY b.title, b.img, b.tags, b.author, b.id, b.genres, b.status, b.release_date, b.sum_ratings
-              ORDER BY b.views DESC LIMIT 8 ; " ;
-          
-
+$cachedData = $redis->get('popular_novels');
 try {
-// Using prepared statement to prevent SQL injection
-$stmt = $pdo->prepare($query);
-$stmt->execute();
+    if (!$cachedData) {
+        $query = "SELECT b.title, b.img, b.tags, b.author, b.id, b.genres, b.status, b.release_date, b.sum_ratings, b.views,
+                    MAX(CASE WHEN c.rn = 1 THEN c.chapter_title END) AS last_chapter_title,
+                    MAX(CASE WHEN c.rn = 1 THEN c.time_created END) AS last_chapter_time,
+                    MAX(CASE WHEN c.rn = 2 THEN c.chapter_title END) AS penultimate_chapter_title,
+                    MAX(CASE WHEN c.rn = 2 THEN c.time_created END) AS penultimate_chapter_time
+                    FROM 
+                    books b
+                    LEFT JOIN (
+                    SELECT book_id, chapter_title, time_created, ROW_NUMBER() OVER (PARTITION BY book_id 
+                    ORDER BY time_created DESC) AS rn
+                    FROM chapters ) c ON b.id = c.book_id
+                    WHERE c.rn <= 2 OR c.rn IS NULL
+                    GROUP BY b.title, b.img, b.tags, b.author, b.id, b.genres, b.status, b.release_date, b.sum_ratings, b.views 
+                    ORDER BY b.views DESC LIMIT 8; "; 
+                            
 
-// Fetch all records as an associative array
-$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Using prepared statement to prevent SQL injection
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+
+        // Fetch all records as an associative array
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $redis->set('popular_novels', json_encode($result));
+        $redis->expire('popular_novels', 262800);
+        } else {
+            // Data is cached, decode and use it
+            $result = json_decode($cachedData, true);
+        }                   
+
 
 // Output the results inside your HTML structure
 foreach ($result as $row) {
@@ -108,7 +126,7 @@ foreach ($result as $row) {
 
         echo '
         <div class="chapter-container-right">
-            <a href="/chapter/'.$row['last_chapter_title'].'" class="chapter-right">
+            <a href="/Novel/'.$row['id'].'/'.$row['last_chapter_title'].'" class="chapter-right">
             '.$last_chapter_title.'
             </a>
             <p class="time-right">
@@ -116,7 +134,7 @@ foreach ($result as $row) {
             </p>
         </div>
         <div class="chapter-container-right">
-            <a href="/chapter/'.$row['penultimate_chapter_title'].'" class="chapter-right">
+            <a href="/Novel/'.$row['id'].'/'.$row['penultimate_chapter_title'].'" class="chapter-right">
             '.$penultimate_chapter_title.'
             </a>
             <p class="time-right">
@@ -132,6 +150,8 @@ foreach ($result as $row) {
 } catch (PDOException $e) {
     echo 'Query failed: ' . $e->getMessage();
 }
+$redis->close();
+
 ?>
          
         <a href="/advanced?sort=most-views&order=dasc" class="more-novels-btn">
