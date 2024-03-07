@@ -2,8 +2,7 @@
 include 'php/db.php' ;
 
 $redis = new Redis();
-$redis->connect('redis', 6379);
-$start_time = microtime(true);
+$redis->connect('127.0.0.1', 6379);
 
 $limit = 20;
 $page = isset($_GET['page']) ? $_GET['page'] : 1;

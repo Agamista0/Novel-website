@@ -10,7 +10,7 @@ if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark") {
     echo '<link rel="stylesheet" href="/assets/css/includes/darkmode.css">';
 }
 
-$bookId = $_GET['book_id'];
+$book_id = $_GET['book_id'];
 
 $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $title = basename($uri_path);
@@ -18,7 +18,7 @@ $title = urldecode($title);
 
 $query = "SELECT c.book_id, c.chapter_title, c.chapter_text, b.tags, b.title
           FROM chapters c
-          JOIN books b ON c.book_id = $bookId
+          JOIN books b ON b.id = $book_id
           WHERE c.chapter_title = :title";
 
 $stmt = $pdo->prepare($query);
@@ -26,7 +26,6 @@ $stmt->bindParam(':title', $title, PDO::PARAM_STR);
 $stmt->execute();
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$book_id = $result['book_id'];
 $tags = explode(',', $result['tags']);
 
 $query = "SELECT id, chapter_title FROM chapters WHERE book_id = :book_id ORDER BY id ASC";
@@ -139,7 +138,10 @@ $bookmarked_or_not = ($existingBookmark > 0) ? 0 : 1;
         </div>
     </div>
 
-    <?php include "footer.php"?>
+    <?php
+        include "comments.php" ;
+        include "footer.php";
+    ?>
     <script>
         document.getElementById('chapterSelect').addEventListener('change', function() {
             var selectedChapter = this.value;
@@ -193,3 +195,4 @@ $bookmarked_or_not = ($existingBookmark > 0) ? 0 : 1;
     </script>
 </body>
 </html>
+
