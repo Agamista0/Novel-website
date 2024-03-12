@@ -17,6 +17,8 @@ include 'php/advanced.php';
     <link rel="stylesheet" href="/assets/css/advanced.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Advanced</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4758581028009642"
+     crossorigin="anonymous"></script>
   </head>
   <body>
    <?php include "backtop.php"?>
@@ -209,7 +211,8 @@ include 'php/advanced.php';
         </div>
       </div>
     </div>
-    
+
+    <div>
     <div class="novels-container">
     
     <?php foreach ($books as $book): 
@@ -289,14 +292,15 @@ include 'php/advanced.php';
             echo '</div>';
         
         endforeach; ?>
+  </div>
 </div>
-      
    
 
 
 
-  </div> <?php include "older-posts.php"?>
-  <?php include "footer.php"?>
+  </div> 
+    <?php include "older-posts.php"?>
+    <?php include "footer.php"?>
   </body>
   <script>
     const novelCardsadvancedTitle = document.querySelectorAll('.title-advanced');

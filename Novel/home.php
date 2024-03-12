@@ -19,6 +19,8 @@ include "php/db.php";
     <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Home</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4758581028009642"
+     crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -113,11 +115,11 @@ include "navbar.php";
                             // Output the formatted time
                             echo '
                             <div class="chapter-container">
-                                <a  href="/Novel/'.$row['id'].'/' . $row['last_chapter_title'] . '" class="chapter">' . $last_chapter_title . '</a>
+                                <a  href="/Novel/'.$row['id'].'/' . urlencode($row['last_chapter_title']) . '" class="chapter">' . $last_chapter_title . '</a>
                                 <p class="time">' . $last_chapter_time . '</p>
                             </div> 
                             <div class="chapter-container">
-                                <a href="/Novel/'.$row['id'].'/' . $row['penultimate_chapter_title'] . '" class="chapter">' . $penultimate_chapter_title . '</a>
+                                <a href="/Novel/'.$row['id'].'/' . urlencode($row['penultimate_chapter_title']) . '" class="chapter">' . $penultimate_chapter_title . '</a>
                                 <p class="time">' . $time_display . '</p>
                             </div>';
                         }
@@ -132,6 +134,20 @@ include "navbar.php";
     </div>
 
     <div class="right-side">
+        <div class="ads1">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4758581028009642"
+            crossorigin="anonymous"></script>
+        <!-- ads1 -->
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-4758581028009642"
+            data-ad-slot="1987003461"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        </div>
         <div class="history">
             <p>MY READING HISTORY</p>
         </div>
@@ -139,6 +155,20 @@ include "navbar.php";
             <?php include 'php/Readhistory.php'; ?>
         </div>
         <?php include "popular-sections.php"; ?>
+    </div>
+    <div class="Ads2">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4758581028009642"
+        crossorigin="anonymous"></script>
+    <!-- Ads2 -->
+    <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-4758581028009642"
+        data-ad-slot="8801971056"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
     </div>
 </div>
 

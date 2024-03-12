@@ -1,7 +1,7 @@
 <?php 
 
 $redis = new Redis();
-$redis->connect('127.0.0.1', 6379);
+$redis->connect('redis', 6379);
 
 
  if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
@@ -55,7 +55,7 @@ try {
 
         // Fetch all records as an associative array
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $redis->set('popular_novels', json_encode($result));
+$redis->set('popular_novels', json_encode($result));
         $redis->expire('popular_novels', 262800);
         } else {
             // Data is cached, decode and use it
@@ -66,7 +66,7 @@ try {
 // Output the results inside your HTML structure
 foreach ($result as $row) {
 ?>
-            <div class="novel-card-right">
+<div class="novel-card-right" data-id="<?php echo $row['id']; ?>">
                 <div class="novel-img" data-id="<?php echo $row['id']; ?>">
                     <img src="<?php echo $row['img']; ?>" alt="<?php echo $row['title']; ?>" alt="">
                 </div>
@@ -162,32 +162,24 @@ $redis->close();
 </div>
 </div>
 <script>
-     const novelCardsPopular = document.querySelectorAll('.novel-img');
+const novelCardsPopular = document.querySelectorAll('.novel-card-right');
 
-     novelCardsPopular.forEach(card => {
+document.addEventListener('DOMContentLoaded', () => {
+    novelCardsPopular.forEach(card => {
         card.addEventListener('click', () => {
-             const id = card.getAttribute('data-id');
-             const url = `/Novel/${id}`;
-             window.location.href = url;
+            const id = card.getAttribute('data-id');
+            const url = `/php/views-increase2?book_id=${id}`;
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         });
     });
-    document.addEventListener('DOMContentLoaded', () => {
-            const novelCardsPopular = document.querySelectorAll('.novel-card-right');
+});
 
-            novelCardsPopular.forEach(card => {
-                card.addEventListener('click', () => {
-                    const id = card.getAttribute('data-id');
-                    const url = `php/views-increase?book_id=${id}`;
-                    fetch(url)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                         })
-                        .catch(error => console.error('Error:', error));
-                });
-            });
-        });
 </script>
 </body>
 </html>

@@ -62,6 +62,8 @@ $bookmarked_or_not = ($existingBookmark > 0) ? 0 : 1;
     <link rel="stylesheet" href="/assets/css/chapter-page.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Chapter Page</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4758581028009642"
+     crossorigin="anonymous"></script>
 </head>
 <body>
     <?php include "backtop.php"?>
@@ -128,6 +130,7 @@ $bookmarked_or_not = ($existingBookmark > 0) ? 0 : 1;
                 </select>
             </div>
             <div class="btns-chatper-page">
+
                 <?php if ($previousChapter): ?>
                     <a href="<?php echo '/Novel/'.$book_id.'/'. urlencode($previousChapter['chapter_title']); ?>" class="prev-btn">Prev</a>
                 <?php endif; ?>
@@ -195,4 +198,3 @@ $bookmarked_or_not = ($existingBookmark > 0) ? 0 : 1;
     </script>
 </body>
 </html>
-

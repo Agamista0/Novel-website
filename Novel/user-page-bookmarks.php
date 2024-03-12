@@ -22,6 +22,8 @@ if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark") {
     <link rel="stylesheet" href="assets/css/user-page-bookmarks.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Bookmarks</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4758581028009642"
+     crossorigin="anonymous"></script>
 </head>
 <body>
 <?php include "search-bar.php"?>

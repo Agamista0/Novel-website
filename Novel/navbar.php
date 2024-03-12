@@ -214,7 +214,7 @@
       <div class="user-loggedin-container" <?php  if(isset($_SESSION['user_id'])){echo"style='display:flex'";}  else{echo"style='display:none'";} ?>>
   <?php 
     echo '<p class="loggedin-name">'.$_SESSION["username"].' </p>' ; 
-    echo '<img  class="profile-loggedin-pic" src="/'.$_SESSION["profileimg"].'" onmouseover="showList()" onmouseout="hideList()">'; 
+    echo '<img  class="profile-loggedin-pic" src="'.$_SESSION["profileimg"].'" onmouseover="showList()" onmouseout="hideList()">'; 
   ?>
   <div id="hover-list" style="display: none;">
     <a href="/account"> User Settings</a>
@@ -305,7 +305,7 @@
 
               <div class="user-loggedin-container-sidebar" <?php if(isset($_SESSION['user_id'])){echo"style='display:flex'";} else{echo"style='display:none'";} ?>>
 <?php 
-      echo '<img src="/'.$_SESSION["profileimg"].'" class="profile-loggedin-pic-sidebar">';  
+      echo '<img src="'.$_SESSION["profileimg"].'" class="profile-loggedin-pic-sidebar">';  
       echo '<p class="loggedin-name-sidebar">'.$_SESSION["username"].'</p>'; 
 ?>
   </div>
