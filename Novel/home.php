@@ -42,6 +42,10 @@ include "navbar.php";
             
             <?php
             foreach ($result as $row) {
+                $query = "SELECT time_created, chapter_title FROM chapters WHERE book_id = ? ORDER BY time_created DESC LIMIT 2";
+                $stmt = $pdo->prepare($query);
+                $stmt->execute([$row['id']]);
+                $chapters = $stmt->fetchAll(PDO::FETCH_ASSOC); 
                 ?>
                 <div class="novel-card-index" data-id="<?php echo $row['id']; ?>">
                     <!-- Novel Card Content -->
@@ -62,67 +66,23 @@ include "navbar.php";
                             <p class="rating-number"><?php echo $row['sum_ratings']; ?></p>
                         </div>
                         <?php
-                        if ($row['last_chapter_title'] && $row['penultimate_chapter_title']) {
                             // Retrieve the first two syllables of the author's name
-                            $last_chapter_title = $row['last_chapter_title'];
-                            $words = explode(' ', $last_chapter_title);
-                            $last_chapter_title = implode(' ', array_slice($words, 0, 2));
-
-                            $penultimate_chapter_title = $row['penultimate_chapter_title'];
-                            $words = explode(' ', $penultimate_chapter_title);
-                            $penultimate_chapter_title = implode(' ', array_slice($words, 0, 2));
-
-                            // Get the current timestamp
-                            $current_time = time();
-
-                            // Get the timestamp of the chapter creation time
-                            $chapter_time = strtotime($row['penultimate_chapter_time']);
-
-                            // Calculate the difference in seconds
-                            $time_difference = $current_time - $chapter_time;
-
-                            // Calculate the difference in minutes, hours, or days
-                            if ($time_difference < 60) {
-                                $time_display = $time_difference . ' seconds ago';
-                            } elseif ($time_difference < 3600) {
-                                $time_display = floor($time_difference / 60) . ' minutes ago';
-                            } elseif ($time_difference < 86400) {
-                                $time_display = floor($time_difference / 3600) . ' hours ago';
-                            } elseif ($time_difference < 2073600) {
-                                $time_display = floor($time_difference / 86400) . ' days ago';
-                            } else {
-                                $time_display = date('F j, Y', strtotime($row['penultimate_chapter_time']));
-                            }
-
-                            $last_chapter_time = strtotime($row['last_chapter_time']);
-
-                            // Calculate the difference in seconds
-                            $time_difference_last = $current_time - $last_chapter_time;
-
-                            // Calculate the difference in minutes, hours, or days
-                            if ($time_difference_last < 60) {
-                                $last_chapter_time = $time_difference . ' seconds ago';
-                            } elseif ($time_difference_last < 3600) {
-                                $last_chapter_time = floor($time_difference / 60) . ' minutes ago';
-                            } elseif ($time_difference_last < 86400) {
-                                $last_chapter_time = floor($time_difference / 3600) . ' hours ago';
-                            } elseif ($time_difference_last < 2073600) {
-                                $last_chapter_time = floor($time_difference / 86400) . ' days ago';
-                            } else {
-                                $last_chapter_time = date('F j, Y', strtotime($row['last_chapter_time']));
-                            }
-
+                            $last_chapter_title = truncateChapterTitle($chapters[0]['chapter_title']);
+                            $penultimate_chapter_title = truncateChapterTitle($chapters[1]['chapter_title']);
+                            // Get the current timestam
+                            $time_display = calculateTimeDifference($chapters[1]['time_created']);
+                            $last_chapter_time = calculateTimeDifference($chapters[0]['time_created']);
                             // Output the formatted time
                             echo '
-                            <div class="chapter-container">
-                                <a  href="/Novel/'.$row['id'].'/' . urlencode($row['last_chapter_title']) . '" class="chapter">' . $last_chapter_title . '</a>
-                                <p class="time">' . $last_chapter_time . '</p>
-                            </div> 
-                            <div class="chapter-container">
-                                <a href="/Novel/'.$row['id'].'/' . urlencode($row['penultimate_chapter_title']) . '" class="chapter">' . $penultimate_chapter_title . '</a>
-                                <p class="time">' . $time_display . '</p>
-                            </div>';
-                        }
+                                <div class="chapter-container">
+                                    <a  href="/Novel/'.$row['id'].'/' . urlencode($chapters[0]['chapter_title']) . '" class="chapter">' . $last_chapter_title . '</a>
+                                    <p class="time">' . $last_chapter_time . '</p>
+                                </div> 
+                                <div class="chapter-container">
+                                    <a href="/Novel/'.$row['id'].'/' . urlencode($chapters[1]['chapter_title']) . '" class="chapter">' . $penultimate_chapter_title . '</a>
+                                    <p class="time">' . $time_display . '</p>
+                                </div>';
+                        
                         ?>
                     </div>
                 </div>
@@ -198,3 +158,31 @@ include "navbar.php";
 
 </body>
 </html>
+
+<?php
+// Function to calculate time difference
+function calculateTimeDifference($timestamp)
+{
+    $current_time = time();
+    $chapter_time = strtotime($timestamp);
+    $time_difference = $current_time - $chapter_time;
+    if ($time_difference < 60) {
+        return $time_difference . ' seconds ago';
+    } elseif ($time_difference < 3600) {
+        return floor($time_difference / 60) . ' minutes ago';
+    } elseif ($time_difference < 86400) {
+        return floor($time_difference / 3600) . ' hours ago';
+    } elseif ($time_difference < 2073600) {
+        return floor($time_difference / 86400) . ' days ago';
+    } else {
+        return date('F j, Y', strtotime($timestamp));
+    }
+}
+
+// Function to truncate chapter title
+function truncateChapterTitle($title)
+{
+    $words = explode(' ', $title);
+    return implode(' ', array_slice($words, 0, 2));
+}
+?>

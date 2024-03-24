@@ -2,6 +2,7 @@
 session_start();
 include "db.php";
 
+$redirect_url =  $_SESSION['redirect_url'];
 
 if (!isset($_POST['user_id'])) {
     header("Location: ../login.php");
@@ -20,20 +21,16 @@ $chapter_id = $_POST['chapter_id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment'])) {
     $comment = htmlspecialchars($_POST['comment']);
 
-    try {
-        $stmt = $pdo->prepare("INSERT INTO comments (chapter_id, user_id, comment_text) VALUES (?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO comments (chapter_id, user_id, comment_text) VALUES (?, ?, ?)");
 
-        $stmt->bindParam(1, $chapter_id);
-        $stmt->bindParam(2, $user_id);
-        $stmt->bindParam(3, $comment);
+    $stmt->bindParam(1, $chapter_id);
+    $stmt->bindParam(2, $user_id);
+    $stmt->bindParam(3, $comment);
 
-        $stmt->execute();
+    $stmt->execute();
 
-        header("Location: chapter.php?chapter_id=$chapter_id");
-        exit();
-    } catch (PDOException $e) {
-        header("Location: chapterchapter_id=$chapter_id&error=" . urlencode($e->getMessage()));
-        exit();
-    }
+    // Redirect after successful insertion
+    header('Location: ' . $redirect_url);
+    exit();
 }
 ?>

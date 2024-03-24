@@ -1,12 +1,18 @@
 <?php
 include "php/db.php";
 
+$uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$title = basename($uri_path);
+$chapter_id = urldecode($title); 
 
 // Fetch comments from the database
-$stmt = $pdo->query("SELECT * FROM comments");
+$stmt = $pdo->prepare("SELECT * FROM comments WHERE chapter_id = ?");
+$stmt->execute([$chapter_id]);
 $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$chapter_id = isset($_GET['title']) ? $_GET['title'] : null;
+
+$replies_display_id = 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -18,8 +24,24 @@ $chapter_id = isset($_GET['title']) ? $_GET['title'] : null;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        /* Basic styling */
-      
+
+    .notvisibile{
+        display:none !important;
+    }
+        #view-more-replies{
+            display:flex;
+            align-items:center;
+            color:#52aa6d;
+        }
+
+
+        #view-more-replies i{
+            margin-left:5px;
+        }
+        .fa-chevron-up{
+        margin-bottom:-3px !important;
+      }
+
 
         .comment-section {
             width:73%;
@@ -126,6 +148,9 @@ $chapter_id = isset($_GET['title']) ? $_GET['title'] : null;
         .reply{
             padding-left:5%;
             margin-top:20px;
+            border-top: 1px solid #eee !important;
+            border:0px;
+            padding-top:25px !important;
         }
         .view-more-replies-container {
             margin-top:20px;
@@ -181,6 +206,16 @@ $chapter_id = isset($_GET['title']) ? $_GET['title'] : null;
 
     <?php foreach ($comments as $comment): ?>
         <?php 
+         $stmt = $pdo->prepare("SELECT * FROM replies where comment_id = ?");
+         $stmt->execute([$comment['id']]);
+         $hasRepliesCheck = $stmt->fetchAll(PDO::FETCH_ASSOC);
+         if ($hasRepliesCheck == null){
+             $hasReplies = 0;
+         }
+         else{
+            $hasReplies = 1;
+         }
+
          $stmt = $pdo->prepare("SELECT * FROM liked_comments where user_id = ? and comment_id = ?");
          $stmt->execute([$_SESSION['user_id'], $comment['id']]);
          $liked_comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -200,14 +235,16 @@ $chapter_id = isset($_GET['title']) ? $_GET['title'] : null;
          else{
              $comment_is_disliked = 1;
          }
-         $stmt = $pdo->prepare("SELECT username FROM users WHERE id = ?");
+         $stmt = $pdo->prepare("SELECT username , profile_image FROM users WHERE id = ?");
          $stmt->execute([$comment['user_id']]);
          $commenter_info = $stmt->fetchAll(PDO::FETCH_ASSOC);
          $commentername = $commenter_info[0]['username'];
+         $commenterImg = $commenter_info[0]['profile_image'];
+
          
         ?>
         <div class="comment">
-            <img src="assets/pictures/profile.jpg" alt="User Avatar" class="avatar">
+            <img src="<?php echo $commenterImg ?>" alt="User Avatar" class="avatar">
             <div class="author"><?php echo  $commentername;?></div>
             <div class="timestamp"><?php echo $comment['time_created']; ?></div>
             <div class="content"><?php echo $comment['comment_text']; ?></div>
@@ -215,25 +252,27 @@ $chapter_id = isset($_GET['title']) ? $_GET['title'] : null;
                 <button comment-id="<?php echo $comment['id']; ?>" class="like-btn <?php if(isset( $comment_is_liked) && $comment_is_liked === 1) { echo "highlighted-btn-like"; } ?>"><i class="far fa-thumbs-up"></i> <span class="like-count"><?php echo $comment['likes']; ?></span></button>
                 <button comment-id="<?php echo $comment['id']; ?>" class="dislike-btn <?php if(isset($comment_is_disliked) && $comment_is_disliked === 1) { echo "highlighted-btn"; } ?>"><i class="far fa-thumbs-down"></i> <span class="dislike-count"><?php echo $comment['dislikes']; ?></span></button>
                 <button class="reply-button">Reply</button>
-            </div>
+            </div>          
+
             <div class="reply-section-container">
     <input type="text" id="reply-text" placeholder="Add a reply...">
     <div class="reply-buttons-container" >
         <button class="submit-reply-btn" comment-id="<?php echo $comment['id']; ?>">Reply</button>
     </div><input type="hidden" class="comment_id_for_reply" comment_id = "<?php $comment_id = $comment['id']; ?>">
     </div>
-    <div class="replies-displayed-container">
-    <?php 
+  <div class="replies-container" id="replies-container-<?php echo $comment['id']; ?>">
+    <!-- Replies will be dynamically loaded here -->
+</div>
+
+  <?php 
 
 include "replies.php";  
     ?>
-</div>
-
-        <div class="view-more-replies-container"  id="replies-container" >
-    <button id="view-more-replies" comment-id="<?php echo $comment['id']; ?>">
+        <div class="view-replies-btn view-more-replies-container <?php if ($hasReplies == 0) {echo 'notvisibile';} ?>" data-comment-id="<?php echo $comment['id']; ?>"  id="replies-container" >
+    <button id="view-more-replies" comment-id="<?php echo $comment['id']; ?>" class="">
     view more replies <i class="fa-solid fa-chevron-down"></i>
     </button>
-</div>
+</div></div>
     <?php endforeach; ?>
 
     <!-- More comments go here -->
@@ -351,38 +390,28 @@ $(document).ready(function() {
 });
 
 
-
-
-
 $(document).ready(function() {
-    var offset = 0;
-    var limit = 10;
-
-    $('#view-more-replies').click(function() {
-        var commentidforreply = $(this).attr('comment-id');
-
-        offset += limit;
-
-         $('.replies-displayed-container').empty();
+    $('.view-replies-btn').click(function() {
+        var commentId = $(this).data('comment-id');
+        var repliesContainer = $('#replies-container-' + commentId);
+        var viewButton = $(this);
 
         $.ajax({
             url: '/replies',
             type: 'POST',
-            data: { comment_id: commentidforreply },
+            data: { comment_id: commentId },
             success: function(response) {
-                $('.replies-displayed-container').append(response);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching replies:', error);
-            }
-        });
-
-        $.ajax({
-            url: '/replies',
-            type: 'GET',
-            data: { offset: offset },
-            success: function(response) {
-                // Do nothing here as we're using the POST request to fetch the initial comments
+                if (response.trim() !== '' && !repliesContainer.hasClass('showed')) {
+                    repliesContainer.addClass('showed');
+                    repliesContainer.html(response);
+                    viewButton.find('.button-text').text('View Less Replies');
+                    viewButton.find('i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                } else {
+                    repliesContainer.empty();
+                    repliesContainer.removeClass('showed');
+                    viewButton.find('.button-text').text('View More Replies');
+                    viewButton.find('i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                }
             },
             error: function(xhr, status, error) {
                 console.error('Error fetching replies:', error);
@@ -390,9 +419,10 @@ $(document).ready(function() {
         });
     });
 });
+
+
 document.addEventListener("DOMContentLoaded", function(){
-    // Select all elements with the class ".reply-button" and ".cancel-reply-btn"
-    var replyButtons = document.querySelectorAll(".reply-button");
+     var replyButtons = document.querySelectorAll(".reply-button");
     var cancelReplyBtns = document.querySelectorAll(".cancel-reply-btn");
     // Select all elements with the class ".reply-section-container"
     var replyButtonContainers = document.querySelectorAll(".reply-section-container");
@@ -402,6 +432,7 @@ document.addEventListener("DOMContentLoaded", function(){
         replyButton.addEventListener("click", function(){
             // Toggle the class on the corresponding reply button container
             replyButtonContainers[index].classList.toggle("viewreplyoptions");
+            
         });
     });
 
