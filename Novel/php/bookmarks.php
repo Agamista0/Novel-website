@@ -2,16 +2,8 @@
 $userID = $_SESSION['user_id'];
 
 $query = "SELECT b.title, b.img, b.id,
-            MAX(CASE WHEN rn = 1 THEN c.chapter_title END) AS last_chapter_title,
-            MAX(CASE WHEN rn = 1 THEN c.time_created END) AS last_chapter_time,
-            MAX(CASE WHEN rn = 2 THEN c.chapter_title END) AS penultimate_chapter_title,
-            MAX(CASE WHEN rn = 2 THEN c.time_created END) AS penultimate_chapter_time,
             bm.bookmarked_at AS bookmark_timestamp
         FROM books b
-        LEFT JOIN (
-            SELECT book_id, chapter_title, time_created, ROW_NUMBER() OVER (PARTITION BY book_id ORDER BY time_created DESC) AS rn
-            FROM chapters
-        ) c ON b.id = c.book_id
         LEFT JOIN bookmarks bm ON b.id = bm.book_id
         WHERE bm.user_id = :user_id
         GROUP BY b.title, b.img, bm.bookmarked_at ,b.id
@@ -23,9 +15,14 @@ $stmt->execute();
 $bookmarks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($bookmarks as $bookmark):
+    $query = "SELECT time_created, chapter_title FROM chapters WHERE book_id = ? ORDER BY time_created DESC LIMIT 2";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([$bookmark['id']]);
+    $chapters = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
     // Calculate time differences for last and penultimate chapters
-    $last_chapter_time = calculateTimeDifference($bookmark['last_chapter_time']);
-    $penultimate_chapter_time = calculateTimeDifference($bookmark['penultimate_chapter_time']);
+    $last_chapter_time = calculateTimeDifference($chapters[0]['time_created']);
+    $penultimate_chapter_time = calculateTimeDifference($chapters[1]['time_created']);
 ?>
 <div class="user-settings-right-side-content">
     <div class="novels">
@@ -41,16 +38,16 @@ foreach ($bookmarks as $bookmark):
             </a>
             <div class="chapters">
                 <div class="chapter-bookmarks">
-                    <a href="/chapter/<?php echo $bookmark['last_chapter_title'] ?>" class="chapter-button">
-                        <?php echo truncateChapterTitle($bookmark['last_chapter_title']); ?>
+                    <a <?php echo 'href="/Novel/'.$bookmark['id'].'/' . urlencode($chapters[0]['chapter_title']).'"' ?> class="chapter-button">
+                        <?php echo truncateChapterTitle($chapters[0]['chapter_title']); ?>
                     </a>
                     <p class="time">
                         <?php echo $last_chapter_time; ?>
                     </p>
                 </div>
                 <div class="chapter-bookmarks">
-                    <a href="/chapter/<?php echo $bookmark['penultimate_chapter_title'] ?>" class="chapter-button">
-                        <?php echo truncateChapterTitle($bookmark['penultimate_chapter_title']); ?>
+                    <a <?php echo 'href="/Novel/'.$bookmark['id'].'/' . urlencode($chapters[1]['chapter_title']).'"' ?>class="chapter-button">
+                        <?php echo truncateChapterTitle($chapters[1]['chapter_title']); ?>
                     </a>
                     <p class="time">
                         <?php echo $penultimate_chapter_time; ?>
@@ -62,7 +59,7 @@ foreach ($bookmarks as $bookmark):
     <div class="updates-contaier">
         <p class="update-header">
             Updated Time
-            <?php echo date('F j, Y', strtotime($bookmark['last_chapter_time'])) ?>
+            <?php echo date('F j, Y', strtotime($bookmark['bookmark_timestamp'])) ?>
         </p>
     </div>
     <div class="edit-section">
@@ -101,3 +98,4 @@ function truncateChapterTitle($title)
     return implode(' ', array_slice($words, 0, 2));
 }
 ?>
+

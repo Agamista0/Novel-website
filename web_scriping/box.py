@@ -81,7 +81,7 @@ def get_page_info(soup):
             title__element = book_div.find("h3", class_="h4")
             title= title__element.text.strip() if title__element else "Null"
 
-            base_url = book_div.find("a")["href"]
+            book_url = book_div.find("a")["href"]
 
             picture__element = book_div.find("img")["data-src"]
             picture = picture__element if picture__element else "Null"
@@ -101,7 +101,7 @@ def get_page_info(soup):
             release_date_element = book_div.find("div", class_="meta-item post-on")
             release_date = release_date_element.text.strip() if release_date_element else "Null"
 
-            response = requests.get(base_url)
+            response = requests.get(book_url)
             tags_soup = BeautifulSoup(response.content, "html.parser")  
 
             tags_element = tags_soup.find("div", class_="tags-content")
@@ -113,10 +113,12 @@ def get_page_info(soup):
 
             if not book_exists(title):
                 # Insert book information into the database
+                print(f'insert in book : {title}')
                 insert_book_info(title, picture, author, genres, status, release_date ,rating ,tags ,Synopsis)
                 logging.info(f'The execution ({title}) book has been inserted successfully!')
 
             else :
+                print(f'updata in book : {title}')
                 update_query = "UPDATE books SET tags = %s , status = %s , release_date= %s WHERE title = %s"
                 update_data = (tags,status,release_date, title)
                 cursor.execute(update_query, update_data)
@@ -142,7 +144,10 @@ def get_page_info(soup):
             print(f'current_chapters_count: {current_chapters_count}')
             for chapter_number in range(current_chapters_count+1, no_OF_chapters+1):
                 try:
-                    chapter_url = f"{base_url}chapter-{chapter_number}/"
+                    if status == "Completed" and chapter_number == no_of_chapters:
+                        chapter_url = f"{book_url}chapter-{chapter_number}-end/"
+                    else:
+                        chapter_url = f"{book_url}chapter-{chapter_number}/"
                     print(chapter_url)
                     response = requests.get(chapter_url)
                     response.raise_for_status()  # Raise an error for bad responses
@@ -155,7 +160,6 @@ def get_page_info(soup):
                     chapter_text = chapter_text_element.prettify()  if chapter_text_element else "Null"
 
                     if book_id and chapter_name != "Null":
-                        print(f'book id : {book_id}')
                         # Insert chapter information into the database
                         insert_chapter_info(book_id, chapter_name, chapter_text)
                         time.sleep(1)
@@ -198,12 +202,10 @@ def scrape_boxnovel():
  
         logging.info("Script execution completed successfully!")
 
-# Call the main scraping function
-    
-while True :
+# Call the main scraping functio
 
-    scrape_boxnovel()
-    cursor.close()
-    db_connection.close()
 
-    time.sleep(86400)
+scrape_boxnovel()
+cursor.close()
+db_connection.close()
+

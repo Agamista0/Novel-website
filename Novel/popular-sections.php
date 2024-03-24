@@ -1,7 +1,6 @@
 <?php 
-
 $redis = new Redis();
-$redis->connect('redis', 6379);
+$redis->connect('127.0.0.1', 6379);
 
 
  if (isset($_SESSION['siteSchema']) && $_SESSION['siteSchema'] === "Dark"){
