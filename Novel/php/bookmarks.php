@@ -98,4 +98,3 @@ function truncateChapterTitle($title)
     return implode(' ', array_slice($words, 0, 2));
 }
 ?>
-

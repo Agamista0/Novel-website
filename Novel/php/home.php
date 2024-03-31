@@ -17,8 +17,9 @@ $cacheKey = "books_page_$page";
 
 if (!$cachedData) {
 
-        $query = "SELECT title, img, tags, author, id, genres, status, release_date, sum_ratings, views
-	FROM books ORDER BY id LIMIT $limit OFFSET $offset";
+    $query = "SELECT title, img, tags, author, id, genres, status, release_date, sum_ratings, views
+        FROM books ORDER BY id LIMIT $limit OFFSET $offset";
+
 
     // Using prepared statement to prevent SQL injection
     $stmt = $pdo->prepare($query);
@@ -26,7 +27,7 @@ if (!$cachedData) {
 
     // Fetch all records as an associative array
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$redis->set($cacheKey, serialize($result));
+    $redis->set($cacheKey, serialize($result));
     // Set expiration time for the cache (e.g., 1 hour)
 $redis->expire($cacheKey, 86400);
 } else {

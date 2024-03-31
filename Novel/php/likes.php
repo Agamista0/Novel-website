@@ -1,7 +1,6 @@
 <?php
 session_start();
 include "db.php";
-$_SESSION['user_id'] = 1;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);

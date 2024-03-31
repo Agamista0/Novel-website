@@ -1,7 +1,6 @@
 <?php
 session_start();
 include "db.php"; // Include your database connection
-$_SESSION['user_id'] = 1;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Check if the user is logged in
@@ -37,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'reply_text' => $replyText,
             'time_created' => $replyTime
         ];
-        echo json_encode($newReply);
+        json_encode($newReply);
     } else {
         // Failed to insert the reply
         echo "Failed to add the reply to the database.";

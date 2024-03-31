@@ -57,6 +57,7 @@ $genreList = explode(',', $book['genres']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="/assets/css/book.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -70,20 +71,6 @@ $genreList = explode(',', $book['genres']);
 
   <?php include "navbar.php"?>
 <body>
-    <div class="ads3">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4758581028009642"
-            crossorigin="anonymous"></script>
-        <!-- ads3 -->
-        <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-4758581028009642"
-            data-ad-slot="9464316030"
-            data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
     <div class="novel-container-books">
 
 
@@ -263,19 +250,6 @@ $genreList = explode(',', $book['genres']);
         </div>
 <div class="popular-included" style="width:25%; margin-left:12%;">
     <div class="right-side">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4758581028009642"
-        crossorigin="anonymous"></script>
-    <!-- ads3 -->
-    <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-4758581028009642"
-        data-ad-slot="9464316030"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    </div>
     <?php include "popular-sections.php"?>
 
 </div>

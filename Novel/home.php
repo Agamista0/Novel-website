@@ -94,20 +94,6 @@ include "navbar.php";
     </div>
 
     <div class="right-side">
-        <div class="ads1">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4758581028009642"
-            crossorigin="anonymous"></script>
-        <!-- ads1 -->
-        <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-4758581028009642"
-            data-ad-slot="1987003461"
-            data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-        </div>
         <div class="history">
             <p>MY READING HISTORY</p>
         </div>
@@ -115,20 +101,6 @@ include "navbar.php";
             <?php include 'php/Readhistory.php'; ?>
         </div>
         <?php include "popular-sections.php"; ?>
-    </div>
-    <div class="Ads2">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4758581028009642"
-        crossorigin="anonymous"></script>
-    <!-- Ads2 -->
-    <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-4758581028009642"
-        data-ad-slot="8801971056"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
     </div>
 </div>
 

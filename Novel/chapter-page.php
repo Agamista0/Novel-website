@@ -141,8 +141,7 @@ $bookmarked_or_not = ($existingBookmark > 0) ? 0 : 1;
         </div>
     </div>
 
-    <?php
-        include "comments.php" ;
+<?php if (isset($_SESSION['user_id'])) { include "comments.php" ; }
         include "footer.php";
     ?>
     <script>

@@ -54,7 +54,6 @@ def book_exists(title):
 
 # Function to insert chapter information into the database
 def insert_chapter_info(book_id, chapter_name, chapter_text):
-    cursor = db_connection.cursor()
     insert_query = "INSERT INTO chapters (book_id, chapter_title, chapter_text) VALUES (%s, %s, %s)"
     chapter_data = (book_id, chapter_name, chapter_text)
     cursor.execute(insert_query, chapter_data)
@@ -67,24 +66,26 @@ def chapter_exists(book_id, chapter_name):
     return cursor.fetchone() is not None
  
 # Select book id 
-def Select_bookID(title):
-    select_cursor = db_connection.cursor()
+def select_book_id(title):
     select_query = "SELECT id FROM books WHERE title = %s"
-    select_cursor.execute(select_query, (title,))
-    return select_cursor.fetchone()[0]
+    cursor.execute(select_query, (title,))
+    result = cursor.fetchone()
+    if result:
+        return result[0]
+    else:
+        return None
 
 # Extract book information
 def get_page_info(soup):
-    
     for book_div in soup.find_all("div", class_="row c-tabs-item__content"):
         try:   
-            title__element = book_div.find("h3", class_="h4")
-            title= title__element.text.strip() if title__element else "Null"
+            title_element = book_div.find("h3", class_="h4")
+            title = title_element.text.strip() if title_element else "Null"
 
             book_url = book_div.find("a")["href"]
 
-            picture__element = book_div.find("img")["data-src"]
-            picture = picture__element if picture__element else "Null"
+            picture_element = book_div.find("img")["data-src"]
+            picture = picture_element if picture_element else "Null"
 
             author_element = book_div.find("div", class_="summary-content")
             author = author_element.text.strip() if author_element else "Null"
@@ -105,107 +106,90 @@ def get_page_info(soup):
             tags_soup = BeautifulSoup(response.content, "html.parser")  
 
             tags_element = tags_soup.find("div", class_="tags-content")
-            tags= tags_element.text.strip() if tags_element else "Null"
+            tags = tags_element.text.strip() if tags_element else "Null"
 
-            Synopsis_element = tags_soup.find("div", class_="g_txt_over")
-            Synopsis = Synopsis_element.prettify() if Synopsis_element else "Null"
-
+            synopsis_element = tags_soup.find("div", class_="g_txt_over")
+            synopsis = synopsis_element.text.strip() if synopsis_element else "Null"
 
             if not book_exists(title):
-                # Insert book information into the database
                 print(f'insert in book : {title}')
-                insert_book_info(title, picture, author, genres, status, release_date ,rating ,tags ,Synopsis)
+                insert_book_info(title, picture, author, genres, status, release_date, rating, tags, synopsis)
                 logging.info(f'The execution ({title}) book has been inserted successfully!')
-
-            else :
-                print(f'updata in book : {title}')
-                update_query = "UPDATE books SET tags = %s , status = %s , release_date= %s WHERE title = %s"
-                update_data = (tags,status,release_date, title)
+            else:
+                print(f'update in book : {title}')
+                update_query = "UPDATE books SET tags = %s, status = %s, release_date = %s WHERE title = %s"
+                update_data = (tags, status, release_date, title)
                 cursor.execute(update_query, update_data)
                 db_connection.commit()
 
+            no_of_chapters = book_div.find("span", class_="font-meta chapter").text.strip()
+            no_of_chapters = int(re.search(r'\d+', no_of_chapters).group())
 
+            book_id = select_book_id(title)
+
+            if book_id:
+                current_chapters_count = cursor.execute("SELECT COUNT(*) FROM chapters WHERE book_id = %s", (book_id,))
+                current_chapters_count = cursor.fetchone()[0]
+            else:
+                current_chapters_count = 0
             
-            # extract that number from the no_OF_chapters  
-            no_OF_chapters = book_div.find("span", class_="font-meta chapter").text.strip()
-            no_OF_chapters = re.search(r'\d+', no_OF_chapters)
-            no_OF_chapters = int(no_OF_chapters.group())
 
-            book_id = Select_bookID(title)
-
-            # Get the current number of chapters in the database for this book
-            select_cursor = db_connection.cursor()
-            select_query = "SELECT COUNT(*) FROM chapters WHERE book_id = %s"
-            select_cursor.execute(select_query, (book_id,))
-            current_chapters_count = select_cursor.fetchone()[0]
-            select_cursor.close()
-
-            # Extract chapter information
-            print(f'current_chapters_count: {current_chapters_count}')
-            for chapter_number in range(current_chapters_count+1, no_OF_chapters+1):
+            print(f'current_chapters_count: {current_chapters_count}      no_of_chapters: {no_of_chapters}')
+            for chapter_number in range(current_chapters_count + 1, no_of_chapters + 1):
                 try:
                     if status == "Completed" and chapter_number == no_of_chapters:
                         chapter_url = f"{book_url}chapter-{chapter_number}-end/"
                     else:
                         chapter_url = f"{book_url}chapter-{chapter_number}/"
-                    print(chapter_url)
+
                     response = requests.get(chapter_url)
-                    response.raise_for_status()  # Raise an error for bad responses
+                    response.raise_for_status()  
+
                     soup = BeautifulSoup(response.content, "html.parser")
 
-                    # Extract chapter information
                     chapter_name_element = soup.find("li", class_="active")
                     chapter_name = chapter_name_element.text.strip() if chapter_name_element else "Null"
+
                     chapter_text_element = soup.find("div", class_="text-left")
-                    chapter_text = chapter_text_element.prettify()  if chapter_text_element else "Null"
+                    chapter_text = chapter_text_element.prettify() if chapter_text_element else "Null"
 
                     if book_id and chapter_name != "Null":
-                        # Insert chapter information into the database
+                        print(chapter_name)
                         insert_chapter_info(book_id, chapter_name, chapter_text)
-                        time.sleep(1)
+                        time.sleep(3)
 
                 except requests.exceptions.RequestException as err:
-                    logging.error(f"Error: {err}")
+                    logging.error(f"Error fetching chapter from {chapter_url}: {err}")
                     continue
-        
-
+                
         except Exception as e:
             logging.error(f"Error in processing book_div: {e}")
+        time.sleep(3)
 
-
-          
-
-# Main scraping function
 def scrape_boxnovel():
-
-        base_url = "https://boxnovel.com/?s&post_type=wp-manga"
-        response = requests.get(base_url)
-        soup = BeautifulSoup(response.content, "html.parser")  
-        print(base_url)
-            
-      
-        get_page_info(soup)
-       
-
-        no_OF_page = soup.find("h1", class_="h4").text.strip()
-        no_OF_page = re.search(r'\d+', no_OF_page)
-        no_OF_page = ceil(int(no_OF_page.group())/10)
-        print(no_OF_page)
-        for page_number in range(2,no_OF_page+1):
-            page_url = f"https://boxnovel.com/page/{page_number}/?s&post_type=wp-manga"
-            print(f'----------------------{page_url}--------------------------')
-            response = requests.get(page_url)
-            if response.status_code == 200:
-                soup = BeautifulSoup(response.content, "html.parser")
-                get_page_info(soup)
+    base_url = "https://boxnovel.com/?s&post_type=wp-manga"
+    response = requests.get(base_url)
+    soup = BeautifulSoup(response.content, "html.parser")  
+    print(base_url)
         
- 
-        logging.info("Script execution completed successfully!")
+    get_page_info(soup)
+       
+    no_of_pages_element = soup.find("h1", class_="h4").text.strip()
+    no_of_pages = int(re.search(r'\d+', no_of_pages_element).group())
+    no_of_pages = ceil(no_of_pages / 10)
+    print(no_of_pages)
+    
+    for page_number in range(75, no_of_pages + 1):
+        page_url = f"https://boxnovel.com/page/{page_number}/?s&post_type=wp-manga"
+        print(f'----------------------{page_url}--------------------------')
+        response = requests.get(page_url)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.content, "html.parser")
+            get_page_info(soup)
+        
+    logging.info("Script execution completed successfully!")
 
-# Call the main scraping functio
-
-
+# Call the main scraping function
 scrape_boxnovel()
 cursor.close()
 db_connection.close()
-
